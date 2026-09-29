@@ -1,0 +1,234 @@
+:root {
+    --azul: #1d4ed8;
+    --oscuro: #1f2937;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--oscuro);
+    background: #fff;
+}
+
+
+.navbar-tienda {
+    background: #fff;
+    border-bottom: 1px solid #dcdfe4;
+}
+
+.marca {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--oscuro);
+    text-decoration: none;
+}
+
+.navbar-tienda .nav-link {
+    color: var(--oscuro);
+}
+
+.marca span,
+.precio,
+.dato-entrega,
+.navbar-tienda .nav-link:hover,
+.navbar-tienda .nav-link.activo {
+    color: var(--azul);
+}
+
+.portada,
+.seccion {
+    padding: 3.5rem 0;
+}
+
+.portada h1 {
+    font-size: 2.6rem;
+}
+
+.dato-entrega {
+    font-weight: 600;
+}
+
+.bajada,
+.intro {
+    margin-bottom: 2rem;
+}
+
+.btn-tinta,
+.btn-contorno {
+    border: 2px solid var(--azul);
+    border-radius: 6px;
+    font-weight: 600;
+    padding: .5rem 1.4rem;
+}
+
+.btn-tinta {
+    background: var(--azul);
+    color: #fff;
+}
+
+.btn-contorno {
+    background: #fff;
+    color: var(--azul);
+}
+
+.btn-tinta:hover {
+    background: #fff;
+    color: var(--azul);
+}
+
+.btn-contorno:hover {
+    background: var(--azul);
+    color: #fff;
+}
+
+.tarjeta-producto {
+    background: #fff;
+    border: 2px solid var(--azul);
+    border-radius: 10px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.tarjeta-producto img {
+    width: 100%;
+    display: block;
+}
+
+.cuerpo {
+    padding: 1.2rem;
+}
+
+.precio {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.pagina-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    padding: 3rem 1rem;
+}
+
+.pagina-login form {
+    width: 320px;
+    padding: 2rem 0;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pagina-login img {
+    width: 100px;
+}
+
+.pagina-login label {
+    align-self: flex-start;
+    margin-left: 10%;
+    padding: 10px 0;
+    font-weight: 500;
+}
+
+.pagina-login input {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.pagina-login button {
+    width: 250px;
+    margin-top: 1.2rem;
+    padding: 10px;
+    cursor: pointer;
+    border: 2px solid var(--azul);
+    border-radius: 20px;
+    background: var(--azul);
+    color: #fff;
+    font-weight: 500;
+}
+
+.pagina-login button:hover {
+    background: #fff;
+    color: var(--azul);
+}
+
+.pagina-login p {
+    margin: 1rem 0 0;
+    font-size: .9rem;
+}
+
+.pie {
+    background: var(--oscuro);
+    color: #e5e7eb;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.pie h2 {
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.pie a {
+    color: #e5e7eb;
+    margin: 0 .8rem;
+    text-decoration: none;
+}
+
+.pie a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Layout (sin Bootstrap) ---------- */
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.col-lg-7 {
+    max-width: 58%;
+}
+
+.btn {
+    display: inline-block;
+    margin: 0 .5rem .5rem 0;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 767.98px) {
+    .portada h1 {
+        font-size: 2rem;
+    }
+
+    .row {
+        grid-template-columns: 1fr;
+    }
+
+    .col-lg-7 {
+        max-width: 100%;
+    }
+}
+
+/* Error messages for form validation */
+.error-message {
+    color: #b91c1c;
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+    margin-left: 10%;
+    width: 80%;
+}
