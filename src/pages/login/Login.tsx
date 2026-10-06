@@ -3,11 +3,20 @@ import { useEffect } from "react";
 import type { ChangeEvent } from "react";
 import { Link } from "wouter";
 import "../../App.css";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [contrasena, setContrasena] = useState<string>("");
-  document.title = "Iniciar sesión";
+  const [personajes, setPersonajes] = useState([]);
+  const [llamarApi, setLlamarApi] = useState(false);
+  useEffect(() => {
+    fetch("https://rickandmortyapi.com/api/character").then(async (e) => {
+      const res = await e.json();
+      console.log(res);
+      setPersonajes(res.results);
+    });
+  }, [llamarApi]);
 
   const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
@@ -18,6 +27,8 @@ const Login = () => {
     console.log(event.target.value);
     setContrasena(event.target.value);
   };
+
+  useDocumentTitle("Iniciar sesión");
   return (
     <>
           <header>

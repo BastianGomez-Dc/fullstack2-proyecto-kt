@@ -1,8 +1,10 @@
 import { Link } from "wouter";
 import "../../App.css";
 import Footer from "../../components/footer/footer";
+import useDocumentTitle from "../hooks/useDocumentTitle";
+
 const Home = () => {
-  document.title = "Poleras Express";
+  useDocumentTitle("Poleras Express");
   return (
     <>
       <header>
