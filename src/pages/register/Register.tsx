@@ -1,19 +1,37 @@
+import { useEffect } from "react";
+import {useState} from "react";
+import { Link } from "wouter";
+
 const Register = () => {
+
+  const [personajes, setPersonajes] = useState([]);
+  const [llamarApi, setLlamarApi] = useState(false);
+  useEffect(() => {
+    fetch("https://rickandmortyapi.com/api/character").then(async (e) => {
+      const res = await e.json();
+      console.log(res);
+      setPersonajes(res.results);
+    });
+  }, [llamarApi]);
+
+  useEffect(() => {
+    document.title = "Crear cuenta" + Date.now();
+  }, []);
   return (
     <>
       <header>
         <nav className="navbar navbar-expand-lg navbar-tienda">
           <div className="container">
-            <a className="marca" href="index.html">Poleras <span>Express</span></a>
+            <Link className="marca" href="/">Poleras <span>Express</span></Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
               aria-label="Abrir menú">
               <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="menu">
               <ul className="navbar-nav">
-                <li className="nav-item"><a className="nav-link" href="index.html">Inicio</a></li>
-                <li className="nav-item"><a className="nav-link" href="login.html">Iniciar sesión</a></li>
-                <li className="nav-item"><a className="nav-link activo" href="registro.html">Crear cuenta</a></li>
+                <li className="nav-item"><Link className="nav-link" href="/">Inicio</Link></li>
+                <li className="nav-item"><Link className="nav-link" href="/login">Iniciar sesión</Link></li>
+                <li className="nav-item"><Link className="nav-link activo" href="/register">Crear cuenta</Link></li>
               </ul>
             </div>
           </div>
@@ -36,12 +54,12 @@ const Register = () => {
           <label htmlFor="confirmar">Confirmar contraseña</label>
           <input type="password" id="confirmar" name="confirmar" placeholder="Repite la contraseña" required />
 
-                  <button type="submit">Crear cuenta</button>
-                  <p>¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
-                </form>
-        </main>
-            </>
-            );
+          <button type="submit">Crear cuenta</button>
+          <p>¿Ya tienes cuenta? <Link href="/login">Iniciar sesión</Link></p>
+        </form>
+      </main>
+    </>
+  );
 };
 
-            export default Register;
+export default Register;

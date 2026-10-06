@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import "../../App.css";
 import Footer from "../../components/footer/footer";
 const Home = () => {
+  document.title = "Poleras Express";
   return (
     <>
       <header>

@@ -6,6 +6,7 @@ import "../../App.css";
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [contrasena, setContrasena] = useState<string>("");
+  document.title = "Iniciar sesión";
 
   const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
