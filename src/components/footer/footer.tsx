@@ -1,3 +1,5 @@
+import { Link } from "wouter";
+
 const Footer = () => {
   return (
 
@@ -7,9 +9,9 @@ const Footer = () => {
       <h2>Poleras Express</h2>
       <p>Poleras personalizadas con tu diseño, listas en 48 horas.</p>
       <nav>
-        <a href="index.html">Inicio</a>
-        <a href="login.html">Iniciar sesión</a>
-        <a href="registro.html">Crear cuenta</a>
+        <Link href="/">Inicio</Link>
+        <Link href="/login">Iniciar sesión</Link>
+        <Link href="/register">Crear cuenta</Link>
       </nav>
     </div>
   </footer>

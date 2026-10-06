@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import "../../App.css";
+import Footer from "../../components/footer/footer";
 const Home = () => {
   return (
     <>
@@ -80,6 +81,8 @@ const Home = () => {
           </div>
         </section>
       </main>
+
+      <Footer />
     </>
   );
 };

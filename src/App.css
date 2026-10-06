@@ -202,6 +202,32 @@ body {
     max-width: 58%;
 }
 
+.navbar-tienda {
+    padding: 1rem 0;
+}
+
+.navbar-tienda .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-toggler {
+    display: none;
+}
+
+.navbar-nav {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-tienda .nav-link {
+    text-decoration: none;
+}
+
 .btn {
     display: inline-block;
     margin: 0 .5rem .5rem 0;
@@ -221,6 +247,17 @@ body {
 
     .col-lg-7 {
         max-width: 100%;
+    }
+
+    .navbar-tienda .container {
+        flex-direction: column;
+        gap: .75rem;
+    }
+
+    .navbar-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
     }
 }
 
