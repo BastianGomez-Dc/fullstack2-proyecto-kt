@@ -1,6 +1,5 @@
 import { Link } from "wouter";
 import "../../App.css";
-import "../components/footer/Footer.css";
 const Home = () => {
   return (
     <>
