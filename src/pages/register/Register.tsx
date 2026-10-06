@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import {useState} from "react";
 import { Link } from "wouter";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const Register = () => {
 
@@ -14,9 +15,8 @@ const Register = () => {
     });
   }, [llamarApi]);
 
-  useEffect(() => {
-    document.title = "Crear cuenta" + Date.now();
-  }, []);
+  useDocumentTitle("Crear cuenta");
+  
   return (
     <>
       <header>
