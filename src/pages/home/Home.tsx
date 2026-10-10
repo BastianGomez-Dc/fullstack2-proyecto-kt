@@ -1,17 +1,21 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import "../../App.css";
-import "../components/footer/Footer.css";
+import Footer from "../../components/footer/footer";
+
 const Home = () => {
+  const [menuAbierto, setMenuAbierto] = useState<boolean>(false);
   return (
     <>
       <header>
         <nav className="navbar navbar-expand-lg navbar-tienda">
           <div className="container">
             <Link className="marca" href="/">Poleras <span>Express</span></Link>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-label="Abrir menú">
+            <button className="navbar-toggler" type="button" aria-controls="menu" aria-expanded={menuAbierto}
+              aria-label="Abrir menú" onClick={() => setMenuAbierto(!menuAbierto)}>
               <span className="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse justify-content-end" id="menu">
+            <div className={`collapse navbar-collapse justify-content-end${menuAbierto ? " abierto" : ""}`} id="menu">
               <ul className="navbar-nav">
                 <li className="nav-item"><Link className="nav-link activo" href="/">Inicio</Link></li>
                 <li className="nav-item"><a className="nav-link" href="#productos">Productos</a></li>
@@ -81,6 +85,7 @@ const Home = () => {
           </div>
         </section>
       </main>
+      <Footer />
     </>
   );
 };
