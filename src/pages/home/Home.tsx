@@ -1,7 +1,10 @@
 import { Link } from "wouter";
 import "../../App.css";
-import "../components/footer/Footer.css";
+import Footer from "../../components/footer/footer";
+import useDocumentTitle from "../hooks/useDocumentTitle";
+
 const Home = () => {
+  useDocumentTitle("Poleras Express");
   return (
     <>
       <header>
@@ -81,6 +84,8 @@ const Home = () => {
           </div>
         </section>
       </main>
+
+      <Footer />
     </>
   );
 };
