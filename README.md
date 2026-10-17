@@ -55,4 +55,26 @@ En [`docs/`](./docs/README.md):
 
 ## Deploy
 
+### Autenticación con Cognito
+
+La configuración está en `src/main.tsx`, que monta el
+`AuthProvider` de `react-oidc-context`. El botón de `/login` abre el acceso
+administrado por Cognito; el proveedor procesa el retorno y el callback
+elimina los parámetros OIDC de la URL.
+
+En el cliente de aplicación de Cognito deben estar habilitados el flujo
+Authorization Code y los scopes `email openid phone`. La URL de retorno
+permitida debe coincidir exactamente con
+`https://d84l1y8p4kdic.cloudfront.net`. Para esta aplicación de navegador,
+el cliente debe estar configurado sin secreto; la librería utiliza PKCE.
+
+`npm run build` genera los archivos para la raíz de CloudFront. Configura
+el alojamiento para devolver `index.html` en las rutas de la SPA, como
+`/login`. El workflow de GitHub Pages especifica su propia ruta base.
+Para probar desde localhost se necesita registrar su URL de retorno en
+Cognito y ajustar `redirect_uri`; la configuración entregada vuelve siempre
+a CloudFront. No se ha verificado el acceso con una cuenta real.
+
+Ejecuta `npm test` para comprobar la limpieza de la URL tras el retorno.
+
 Cada push a `main` redespliega vía `.github/workflows/deploy.yml` (requiere **Settings > Pages > Source: GitHub Actions** una sola vez). Detalle en [`docs/05-github-pages.md`](./docs/05-github-pages.md).
