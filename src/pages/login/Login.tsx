@@ -1,91 +1,27 @@
 import { useState } from "react";
-import { useEffect } from "react";
-import type { ChangeEvent, FocusEvent, SubmitEvent } from "react";
+import { useAuth } from "react-oidc-context";
 import { Link } from "wouter";
 import "../../App.css";
 import styles from "./Login.module.css";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
-type Campo = "email" | "contrasena";
-type Errores = Partial<Record<Campo, string>>;
-
-const REGEX_CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// Devuelve el mensaje de error de un campo, o undefined si es válido
-const validarCampo = (campo: Campo, valor: string): string | undefined => {
-  if (campo === "email") {
-    if (!valor.trim()) return "Ingresa tu correo electrónico.";
-    if (!REGEX_CORREO.test(valor)) return "Revisa el formato, por ejemplo nombre@correo.cl.";
-  }
-  if (campo === "contrasena" && !valor) return "Ingresa tu contraseña.";
-  return undefined;
-};
-
 const Login = () => {
-    //useState es un hook de react que le da memoria al componente
-  const [email, setEmail] = useState<string>("");
-  const [contrasena, setContrasena] = useState<string>("");
-  const [personajes, setPersonajes] = useState([]);
-  const [llamarApi, setLlamarApi] = useState(false);
-  const [mostrarContrasena, setMostrarContrasena] = useState(false);
-  const [errores, setErrores] = useState<Errores>({});
-  const [enviando, setEnviando] = useState(false);
-  //useEffect es un hook de react que se ejectua al cargar el componente
-  useEffect(() => {
-    fetch("https://rickandmortyapi.com/api/character").then(async (e) => {
-      // const res = await e.json(); sirve para esperar a que la promesa se resuelva y obtener el resultado
-      const res = await e.json();
-      console.log(res);
-      setPersonajes(res.results);
-    });
-  }, [llamarApi]);
+  const auth = useAuth();
+  const [errorAcceso, setErrorAcceso] = useState(false);
+  const ocupado = auth.isLoading || Boolean(auth.activeNavigator);
 
-  // Si el campo ya tiene un error, se vuelve a validar mientras el usuario escribe
-  const revalidar = (campo: Campo, valor: string) => {
-    if (errores[campo]) {
-      setErrores((prev) => ({ ...prev, [campo]: validarCampo(campo, valor) }));
+  const iniciarSesion = async () => {
+    setErrorAcceso(false);
+    try {
+      await auth.signinRedirect();
+    } catch {
+      setErrorAcceso(true);
     }
   };
 
-  const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
-    setEmail(event.target.value);
-    revalidar("email", event.target.value);
-  };
-  //ChangeEvent es un tipo de evento de react que se ejecuta al cambiar el valor de un input
-  const handleChangeContrasena = (event: ChangeEvent<HTMLInputElement>) => {
-    //event.target.value es el valor del input
-    console.log(event.target.value);
-    //setContrasena es la funcion que cambia el valor
-    setContrasena(event.target.value);
-    revalidar("contrasena", event.target.value);
-  };
-
-  // Valida el campo cuando el usuario sale de él (onBlur)
-  const handleBlur = (campo: Campo) => (event: FocusEvent<HTMLInputElement>) => {
-    setErrores((prev) => ({ ...prev, [campo]: validarCampo(campo, event.target.value) }));
-  };
-
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
-    const nuevosErrores: Errores = {
-      email: validarCampo("email", email),
-      contrasena: validarCampo("contrasena", contrasena),
-    };
-    setErrores(nuevosErrores);
-
-    if (nuevosErrores.email || nuevosErrores.contrasena) {
-      event.preventDefault();
-      // Lleva el foco al primer campo con error
-      document.getElementById(nuevosErrores.email ? "correo" : "password")?.focus();
-      return;
-    }
-    setEnviando(true);
-  };
-
-  //useDocumentTitle es un hook personalizado que cambia el titulo de la pagina
   useDocumentTitle("Iniciar sesión");
   return (
-    <>
+    <div className={styles.layout}>
           <header>
         <nav className="navbar navbar-expand-lg navbar-tienda">
             <div className="container">
@@ -115,7 +51,7 @@ const Login = () => {
               </svg>
               Poleras Express
             </span>
-            <h2 className={styles.marcaTitulo}>Tu diseño, estampado y en tus manos.</h2>
+            <p className={styles.marcaTitulo}>Tu diseño, estampado y en tus manos.</p>
             <p className={styles.marcaTexto}>Inicia sesión para revisar tus pedidos y seguir creando.</p>
           </div>
 
@@ -158,99 +94,59 @@ const Login = () => {
           </ul>
         </section>
 
-        <form id="formLogin" className={styles.formulario} action={import.meta.env.BASE_URL} method="get"
-            noValidate onSubmit={handleSubmit} aria-labelledby="tituloLogin">
-            <img className={styles.logo} src="img/login2.png" alt="" width="56" height="56" />
-            <h1 id="tituloLogin" className={styles.titulo}>Bienvenido de nuevo</h1>
-            <p className={styles.subtitulo}>Ingresa tus datos para acceder a tu cuenta.</p>
-
-            <div className={styles.campo}>
-              <label className={styles.label} htmlFor="correo">Correo electrónico</label>
-              <div className={styles.controlEnvoltura}>
-                <svg className={styles.iconoCampo} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect width="20" height="16" x="2" y="4" rx="2" />
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                </svg>
-                <input type="email" id="correo" name="correo" placeholder="nombre@correo.cl" autoComplete="email" required
-                    className={`${styles.input} ${errores.email ? styles.inputInvalido : ""}`}
-                    aria-invalid={errores.email ? true : undefined}
-                    aria-describedby={errores.email ? "correo-error" : undefined}
-                    value={email} onChange={handleChangeEmail} onBlur={handleBlur("email")} />
-              </div>
-              {errores.email && (
-                <p id="correo-error" className={styles.error} role="alert">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10" /><path d="M12 8v4" /><path d="M12 16h.01" />
+        <section className={styles.formulario} aria-labelledby="tituloLogin">
+          <img className={styles.logo} src="img/login2.png" alt="" width="56" height="56" />
+          <h1 id="tituloLogin" className={styles.titulo}>Hola de nuevo</h1>
+          {auth.isAuthenticated ? (
+            <>
+              <p className={styles.subtitulo}>Sesión iniciada como {auth.user?.profile.email ?? auth.user?.profile.sub}.</p>
+              <Link className={styles.botonEnviar} href="/">Ir al inicio</Link>
+            </>
+          ) : (
+            <>
+              <p className={styles.subtitulo}>Accede a tu cuenta para continuar. Te llevaremos a la página segura de inicio de sesión.</p>
+              {(auth.error || errorAcceso) && (
+                <p className={styles.alerta} role="alert">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 8v4" />
+                    <path d="M12 16h.01" />
                   </svg>
-                  {errores.email}
+                  <span>No pudimos conectar con la página de inicio de sesión. Revisa tu conexión a internet y vuelve a intentarlo.</span>
                 </p>
               )}
-            </div>
-
-            <div className={styles.campo}>
-              <label className={styles.label} htmlFor="password">Contraseña</label>
-              <div className={styles.controlEnvoltura}>
-                <svg className={styles.iconoCampo} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+              <button type="button" className={styles.botonEnviar} disabled={ocupado}
+                  aria-busy={ocupado} onClick={() => void iniciarSesion()}>
+                {ocupado ? (
+                  <>
+                    <span className={styles.spinner} aria-hidden="true" />
+                    Conectando…
+                  </>
+                ) : (
+                  <>
+                    Iniciar sesión
+                    <svg className={styles.flecha} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </>
+                )}
+              </button>
+              <p className={styles.seguro}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect width="18" height="11" x="3" y="11" rx="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
-                <input type={mostrarContrasena ? "text" : "password"} id="password" name="password" placeholder="Tu contraseña"
-                    autoComplete="current-password" required
-                    className={`${styles.input} ${styles.inputConBoton} ${errores.contrasena ? styles.inputInvalido : ""}`}
-                    aria-invalid={errores.contrasena ? true : undefined}
-                    aria-describedby={errores.contrasena ? "password-error" : undefined}
-                    value={contrasena} onChange={handleChangeContrasena} onBlur={handleBlur("contrasena")} />
-                <button type="button" className={styles.botonVer}
-                    aria-label={mostrarContrasena ? "Ocultar contraseña" : "Mostrar contraseña"}
-                    aria-pressed={mostrarContrasena}
-                    onClick={() => setMostrarContrasena((visible) => !visible)}>
-                  {mostrarContrasena ? (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
-                      <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
-                      <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" />
-                      <path d="m2 2 20 20" />
-                    </svg>
-                  ) : (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-              {errores.contrasena && (
-                <p id="password-error" className={styles.error} role="alert">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10" /><path d="M12 8v4" /><path d="M12 16h.01" />
-                  </svg>
-                  {errores.contrasena}
-                </p>
-              )}
-            </div>
-
-            <button type="submit" className={styles.botonEnviar} disabled={enviando} aria-busy={enviando}>
-              {enviando ? (
-                <>
-                  <span className={styles.spinner} aria-hidden="true" />
-                  Ingresando…
-                </>
-              ) : (
-                <>
-                  Iniciar sesión
-                  <svg className={styles.flecha} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-                  </svg>
-                </>
-              )}
-            </button>
-
-            <div className={styles.separador}>¿Primera vez aquí?</div>
-            <p className={styles.registro}>¿No tienes cuenta? <Link href="/register">Crear cuenta</Link></p>
-        </form>
+                Inicio de sesión protegido con conexión cifrada.
+              </p>
+            </>
+          )}
+          <div className={styles.separador}>¿Primera vez aquí?</div>
+          <p className={styles.registro}><Link href="/register">Crea tu cuenta gratis</Link></p>
+        </section>
       </div>
     </main>
-    </>
+    </div>
   );
 };
 

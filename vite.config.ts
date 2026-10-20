@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // Base path para GitHub Pages (https://<usuario>.github.io/fullstack2-proyecto-kt/)
-  base: '/fullstack2-proyecto-kt/',
+  // CloudFront sirve desde la raíz; GitHub Pages especifica --base en su workflow.
+  base: '/',
   plugins: [react()],
 })
