@@ -5,86 +5,91 @@ import styles from "./Home.module.css";
 import Footer from "../../components/footer/footer";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
-const PRODUCTOS = [
+const Cursos = [
   {
-    nombre: "Polera de Jujutsu Kaisen!!!",
-    descripcion: "Algodón peinado 180 g. La base que mejor levanta los colores fuertes.",
+    nombre: "Curso 1",
+    descripcion: "Descripcion curso 1.",
     precio: "$16.990",
-    imagen: "img/poleraHombre.png",
-    alt: "Polera negra de hombre cuello redondo",
-    etiqueta: "Cuello redondo",
+    imagen: "",
+    alt: "Imagen de referencia a un curso",
+    etiqueta: "Cursos",
   },
   {
-    nombre: "Negra premium",
-    descripcion: "Tela más densa y tinta plastisol, pensada para diseños de una sola figura.",
+    nombre: "Curso 2",
+    descripcion: "Descripcion curso 2.",
     precio: "$14.990",
-    imagen: "img/poleraAcidNew.png",
-    alt: "Polera acid wash desgastada",
-    etiqueta: "Acid wash",
+    imagen: "",
+    alt: "Imagen de referencia a un pack de cursos",
+    etiqueta: "Cursos",
   },
   {
     nombre: "Pack curso",
-    descripcion: "Desde 10 unidades con el mismo diseño y nombre impreso en la espalda.",
+    descripcion: "Descripcion oferta cursos.",
     precio: "$9.990",
-    imagen: "img/poleraOversize.png",
-    alt: "Polera oversize con estampado",
-    etiqueta: "Oversize",
+    imagen: "",
+    alt: "Imagen de referencia a un pack de cursos",
+    etiqueta: "Cursos",
     unidad: "c/u",
   },
 ];
 
 const BENEFICIOS = [
   {
-    titulo: "Despacho en 48 horas",
-    texto: "A todo Chile, directo a tu puerta.",
+    titulo: "Inscripción online",
+    texto: "Registra a los participantes directamente desde el catálogo de cursos.",
     icono: (
-      <>
-        <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
-        <path d="M15 18H9" />
-        <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14" />
-        <circle cx="17" cy="18" r="2" />
-        <circle cx="7" cy="18" r="2" />
-      </>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="2" y="3" width="20" height="14" rx="2" />
+        <path d="M8 3V1h8v2" />
+        <path d="M6 8h.01M10 8h.01M14 8h.01M6 12h.01M10 12h.01M14 12h.01" />
+      </svg>
     ),
   },
   {
-    titulo: "Delante y detrás",
-    texto: "Personaliza ambos lados de la polera.",
+    titulo: "Código QR",
+    texto: "Cada asistente recibe su propio código para acreditar la entrada.",
     icono: (
-      <>
-        <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
-        <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
-        <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
-        <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
-        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.84-.44-1.13-.29-.29-.44-.65-.44-1.13a1.64 1.64 0 0 1 1.67-1.67h2c3.05 0 5.56-2.5 5.56-5.55C21.97 6.01 17.46 2 12 2z" />
-      </>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+        <path d="M21 3h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h7" />
+        <path d="M21 21h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h7" />
+        <path d="M3 14v7a2 2 0 0 0 2 2h7" />
+      </svg>
     ),
   },
   {
-    titulo: "Algodón peinado",
-    texto: "Telas suaves que mantienen el color.",
+    titulo: "Escaneo instantáneo",
+    texto: "Registra la asistencia en el momento con el lector de QR.",
     icono: (
-      <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+        <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+        <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+        <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+        <path d="M7 12h10" />
+      </svg>
     ),
   },
   {
-    titulo: "Pedidos de curso",
-    texto: "Desde una polera hasta el curso completo.",
+    titulo: "Sincronización sin conexión",
+    texto: "Guarda los eventos y sincroniza con el registro cuando hay red.",
     icono: (
-      <>
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-      </>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M17 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7" />
+        <path d="M17 2v5h5" />
+        <path d="M7 22v-5H2v-5" />
+        <path d="M7 13v4a2 2 0 0 0 2 2h4" />
+      </svg>
     ),
   },
 ];
 
 const PASOS = [
-  { titulo: "Sube tu diseño", texto: "Una imagen, un logo o el nombre de tu curso. Nosotros lo preparamos para estampar." },
-  { titulo: "Elige la base", texto: "Cuello redondo, acid wash u oversize. Revisas cómo queda antes de confirmar." },
-  { titulo: "Recíbela en 48 horas", texto: "Elegimos la tinta, estampamos y despachamos a cualquier parte de Chile." },
+  { titulo: "Registra tu curso", texto: "Deja constancia del programa y prepara la lista de participantes." },
+  { titulo: "Genera el código QR", texto: "Cada inscrito recibe su código para acreditar la asistencia." },
+  { titulo: "Escanea y acredita", texto: "Registra la entrada en el acto y sincroniza los datos." },
 ];
 
 const Icono = ({ children, size = 22 }: { children: ReactNode; size?: number }) => (
@@ -101,22 +106,22 @@ const Flecha = () => (
 );
 
 const Home = () => {
-  useDocumentTitle("Poleras Express");
+  useDocumentTitle("SyncPass");
   return (
     <>
       <header>
         <nav className="navbar navbar-expand-lg navbar-tienda">
           <div className="container">
-            <Link className="marca" href="/">Poleras <span>Express</span></Link>
+            <Link className="marca" href="/">SyncPass</Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-label="Abrir menú">
               <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="menu">
               <ul className="navbar-nav">
                 <li className="nav-item"><Link className="nav-link activo" href="/" aria-current="page">Inicio</Link></li>
-                <li className="nav-item"><a className="nav-link" href="#productos">Productos</a></li>
+                <li className="nav-item"><a className="nav-link" href="#cursos">Cursos</a></li>
                 <li className="nav-item"><Link className="nav-link" href="/login">Iniciar sesión</Link></li>
-                <li className="nav-item"><Link className="nav-link" href="/register">Crear cuenta</Link></li>
+                <li className="nav-item"><Link className="nav-link " href="/register">Crear cuenta</Link></li>
               </ul>
             </div>
           </div>
@@ -130,15 +135,15 @@ const Home = () => {
             <div className={styles.portadaTexto}>
               <span className={styles.etiqueta}>
                 <Icono size={16}>{BENEFICIOS[0].icono}</Icono>
-                Despacho en 48 horas a todo Chile
+                Inscripción y acreditación con QR
               </span>
-              <h1 className={styles.titulo}>Tu diseño, estampado y en tus manos <span>esta semana.</span></h1>
+              <h1 className={styles.titulo}>De tu curso a la acreditación <span>en minutos.</span></h1>
               <p className={styles.bajada}>
-                Subes tu imagen, elegimos la tinta y estampamos sobre algodón peinado. Desde una polera hasta el pedido completo del curso.
+                Registra la participación de tu curso, genera el código QR de cada asistente y acredita la entrada en el acto. Sin papeleo, sin filas, sin complicaciones.
               </p>
               <div className={styles.acciones}>
-                <a className={styles.botonPrimario} href="#productos">
-                  Ver el catálogo
+                <a className={styles.botonPrimario} href="#cursos">
+                  Ver los cursos
                   <Flecha />
                 </a>
                 <Link className={styles.botonSecundario} href="/register">Crear cuenta</Link>
@@ -146,29 +151,23 @@ const Home = () => {
               <ul className={styles.confianza}>
                 <li>
                   <Icono size={18}><path d="M20 6 9 17l-5-5" /></Icono>
-                  Desde 1 unidad
+                  Inscripción online
                 </li>
                 <li>
                   <Icono size={18}><path d="M20 6 9 17l-5-5" /></Icono>
-                  Delante y detrás
+                  Código QR
                 </li>
                 <li>
                   <Icono size={18}><path d="M20 6 9 17l-5-5" /></Icono>
-                  Precios desde $9.990
+                  Escaneo en el acto
                 </li>
               </ul>
-            </div>
-
-            <div className={styles.portadaVisual} aria-hidden="true">
-              <img className={styles.visualAtras1} src="img/poleraAcidNew.png" alt="" width="993" height="994" />
-              <img className={styles.visualAtras2} src="img/poleraHombre.png" alt="" width="993" height="994" />
-              <img className={styles.visualPrincipal} src="img/poleraOversize.png" alt="" width="993" height="994" fetchPriority="high" />
             </div>
           </div>
         </section>
 
         {/* ---------- Beneficios ---------- */}
-        <section className={styles.beneficios} aria-label="Por qué Poleras Express">
+        <section className={styles.beneficios} aria-label="Por qué SyncPass">
           <ul className={`container ${styles.beneficiosGrid}`}>
             {BENEFICIOS.map((b) => (
               <li key={b.titulo} className={styles.beneficio}>
@@ -183,16 +182,16 @@ const Home = () => {
         </section>
 
         {/* ---------- Catálogo ---------- */}
-        <section className={styles.seccion} id="productos" aria-labelledby="tituloCatalogo">
+        <section className={styles.seccion} id="cursos" aria-labelledby="tituloCatalogo">
           <div className="container">
             <div className={styles.encabezado}>
-              <p className={styles.antetitulo}>Catálogo</p>
-              <h2 id="tituloCatalogo" className={styles.seccionTitulo}>Elige tu base</h2>
-              <p className={styles.seccionTexto}>Tres bases de algodón, todas personalizables por delante y por detrás.</p>
+              <p className={styles.antetitulo}>Nuestros cursos</p>
+              <h2 id="tituloCatalogo" className={styles.seccionTitulo}>Elige tu práctica</h2>
+              <p className={styles.seccionTexto}>Cada práctica se prepara sobre una base personalizada y se acredita con código QR.</p>
             </div>
 
             <ul className={styles.productos}>
-              {PRODUCTOS.map((p) => (
+              {Cursos.map((p) => (
                 <li key={p.nombre}>
                   <article className={styles.producto}>
                     <div className={styles.productoImagen}>
@@ -208,7 +207,7 @@ const Home = () => {
                           {p.unidad && <span> {p.unidad}</span>}
                         </p>
                         <Link className={styles.botonComprar} href="/register">
-                          Comprar<span className={styles.srOnly}> {p.nombre}</span>
+                          Inscribirme<span className={styles.srOnly}> {p.nombre}</span>
                         </Link>
                       </div>
                     </div>
@@ -224,7 +223,7 @@ const Home = () => {
           <div className="container">
             <div className={styles.encabezado}>
               <p className={styles.antetitulo}>Cómo funciona</p>
-              <h2 id="tituloPasos" className={styles.seccionTitulo}>De tu idea a tu polera en tres pasos</h2>
+              <h2 id="tituloPasos" className={styles.seccionTitulo}>De la inscripción al QR en tres pasos</h2>
             </div>
 
             <ol className={styles.pasos}>
@@ -244,11 +243,11 @@ const Home = () => {
           <div className="container">
             <div className={styles.banda}>
               <div>
-                <h2 id="tituloCurso" className={styles.bandaTitulo}>¿Pedido para tu curso o tu equipo?</h2>
-                <p className={styles.bandaTexto}>Desde 10 unidades con el mismo diseño y el nombre de cada persona en la espalda, a $9.990 cada una.</p>
+                <h2 id="tituloCurso" className={styles.bandaTitulo}>¿Tu curso necesita acreditación QR?</h2>
+                <p className={styles.bandaTexto}>Registra participantes, genera sus códigos y acredita la asistencia en el acto.</p>
               </div>
               <Link className={styles.botonBlanco} href="/register">
-                Crear cuenta gratis
+                Regístrate gratis
                 <Flecha />
               </Link>
             </div>

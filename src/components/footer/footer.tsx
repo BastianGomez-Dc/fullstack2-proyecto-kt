@@ -6,14 +6,14 @@ const Footer = () => {
       <div className="container">
         <div className="pie-grid">
           <div>
-            <Link className="marca" href="/">Poleras <span>Express</span></Link>
-            <p className="pie-descripcion">Poleras personalizadas con tu diseño, listas en 48 horas.</p>
+            <Link className="marca" href="/">SyncPass</Link>
+            <p className="pie-descripcion">Inscripciones, códigos QR y acreditación de cursos en un solo lugar.</p>
           </div>
-          <nav aria-labelledby="pie-tienda">
-            <h2 id="pie-tienda">Tienda</h2>
+          <nav aria-labelledby="pie-plataforma">
+            <h2 id="pie-plataforma">Plataforma</h2>
             <ul>
               <li><Link href="/">Inicio</Link></li>
-              <li><a href="#productos">Catálogo</a></li>
+              <li><a href="#cursos">Cursos</a></li>
             </ul>
           </nav>
           <nav aria-labelledby="pie-cuenta">
@@ -24,7 +24,7 @@ const Footer = () => {
             </ul>
           </nav>
         </div>
-        <p className="pie-abajo">© {new Date().getFullYear()} Poleras Express. Despacho a todo Chile.</p>
+        <p className="pie-abajo">© {new Date().getFullYear()} SyncPass. Registro y acreditación de cursos.</p>
       </div>
     </footer>
   );

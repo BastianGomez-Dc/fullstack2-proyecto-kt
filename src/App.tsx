@@ -11,7 +11,7 @@ const App = () => (
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
-      <Route>404: No such page!</Route>
+      <Route>404: Página no encontrada</Route>
     </Switch>
   </Router>
 );

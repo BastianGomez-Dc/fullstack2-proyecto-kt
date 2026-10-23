@@ -26,19 +26,19 @@
 /* Variante Text (Sin fondo ni borde, estilo enlace) */
 .button[data-variant="text"] {
   background-color: transparent;
-  color: #3b82f6;
+  color: #1f574c;
   border-color: transparent;
 }
 
 .button[data-variant="text"]:hover:not(:disabled) {
-  background-color: rgba(59, 130, 246, 0.08);
+  background-color: rgba(31, 87, 76, 0.08);
 }
 
 /* Variante Contained (Sólido con color principal) */
 .button[data-variant="contained"] {
-  background-color: #3b82f6;
+  background-color: #1f574c;
   color: #ffffff;
-  border-color: #3b82f6;
+  border-color: #1f574c;
 }
 
 .button[data-variant="contained"]:hover:not(:disabled) {

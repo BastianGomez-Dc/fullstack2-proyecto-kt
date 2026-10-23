@@ -28,7 +28,7 @@ const validar = (campo: NombreCampo, valores: Valores): string | undefined => {
       if (valor.length < 3) return "El nombre debe tener al menos 3 letras.";
       return undefined;
     case "correo":
-      if (!valor) return "Escribe tu correo; ahí te avisaremos de tus pedidos.";
+      if (!valor) return "Escribe tu correo; ahí te avisamos de tus inscripciones.";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(valor)) return "Revisa el correo: debe tener el formato nombre@correo.cl.";
       return undefined;
     case "password":
@@ -204,7 +204,7 @@ const Register = () => {
       <header>
         <nav className="navbar navbar-expand-lg navbar-tienda">
           <div className="container">
-            <Link className="marca" href="/">Poleras <span>Express</span></Link>
+            <Link className="marca" href="/">SyncPass</Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
               aria-label="Abrir menú">
               <span className="navbar-toggler-icon"></span>
@@ -222,16 +222,16 @@ const Register = () => {
 
       <main className={styles.pagina}>
         <div className={styles.tarjeta}>
-          <section className={styles.marca} aria-label="Poleras Express">
+          <section className={styles.marca} aria-label="SyncPass">
             <div>
               <span className={styles.etiqueta}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
                 </svg>
-                Poleras Express
+                SyncPass
               </span>
-              <p className={styles.marcaTitulo}>Crea tu cuenta y estampa tu primera polera.</p>
-              <p className={styles.marcaTexto}>Toma menos de un minuto. Guarda tus diseños y sigue tus pedidos.</p>
+              <p className={styles.marcaTitulo}>Crea tu cuenta y empieza tu primer curso.</p>
+              <p className={styles.marcaTexto}>Toma menos de un minuto. Guarda tus cursos y sigue sus acreditaciones.</p>
             </div>
 
             <ul className={styles.beneficios}>
@@ -243,7 +243,7 @@ const Register = () => {
                     <path d="M7 3v4a1 1 0 0 0 1 1h7" />
                   </svg>
                 </span>
-                Guarda tus diseños para volver a pedirlos
+                Guarda tus cursos para volver a inscribirte
               </li>
               <li>
                 <span className={styles.beneficioIcono}>
@@ -253,7 +253,7 @@ const Register = () => {
                     <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7" />
                   </svg>
                 </span>
-                Sigue el estado de cada pedido
+                Sigue el estado de cada inscripción
               </li>
               <li>
                 <span className={styles.beneficioIcono}>
@@ -265,7 +265,7 @@ const Register = () => {
                     <circle cx="7" cy="18" r="2" />
                   </svg>
                 </span>
-                Despacho en 48 horas a todo Chile
+                Acredita con QR en el acto
               </li>
             </ul>
           </section>
@@ -279,7 +279,7 @@ const Register = () => {
                   </svg>
                 </span>
                 <h1 id="tituloRegistro" className={styles.titulo}>¡Todo listo, {valores.nombre.trim().split(" ")[0]}!</h1>
-                <p className={styles.subtitulo}>Tus datos están correctos. Ahora inicia sesión para empezar a diseñar.</p>
+                <p className={styles.subtitulo}>Tus datos están correctos. Ahora inicia sesión para empezar.</p>
                 <Link className={styles.botonEnviar} href="/login">
                   Ir a iniciar sesión
                   <svg className={styles.flecha} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
