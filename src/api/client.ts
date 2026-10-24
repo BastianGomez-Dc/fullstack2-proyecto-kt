@@ -1,4 +1,5 @@
-const BASE_URL = (import.meta.env?.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
+// Por defecto la API va en el mismo origen bajo /api (en desarrollo, el proxy de Vite la reenvía al backend)
+const BASE_URL = (import.meta.env?.VITE_API_BASE_URL ?? "/api").replace(/\/$/, "");
 
 export class ApiError extends Error {
   readonly status: number;

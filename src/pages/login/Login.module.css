@@ -403,6 +403,48 @@
   margin-top: 1px;
 }
 
+.aviso {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #15803d;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 0.625rem;
+}
+
+/* Acción secundaria con aspecto de enlace (reenviar código, confirmar cuenta) */
+.botonEnlace {
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--verde);
+  background: none;
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.botonEnlace:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.botonEnlace:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 2px;
+}
+
+.botonEnlace:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.registro + .registro {
+  margin-top: 0.75rem;
+}
+
 .seguro {
   display: flex;
   justify-content: center;

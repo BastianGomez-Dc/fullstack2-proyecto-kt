@@ -28,7 +28,8 @@ const MENSAJE_GENERICO = "No pudimos iniciar sesión. Revisa tu conexión e inte
 const MENSAJES_ERROR: Record<string, string> = {
   NotAuthorizedException: "El usuario o la contraseña no son correctos.",
   UserNotFoundException: "El usuario o la contraseña no son correctos.",
-  UserNotConfirmedException: "Tu cuenta aún no está confirmada. Revisa el código que llegó a tu correo.",
+  UserNotConfirmedException:
+    "Tu cuenta aún no está confirmada. En «Crear cuenta», elige «Confirma tu cuenta» y escribe el código que llegó a tu correo.",
   PasswordResetRequiredException: "Debes restablecer tu contraseña antes de iniciar sesión.",
   TooManyRequestsException: "Hiciste demasiados intentos. Espera unos minutos e intenta de nuevo.",
   LimitExceededException: "Hiciste demasiados intentos. Espera unos minutos e intenta de nuevo.",
@@ -77,10 +78,12 @@ export function usuarioDesdeClaims(claims: Record<string, unknown>): Usuario {
 export async function obtenerSesion(): Promise<Sesion | null> {
   const { tokens } = await fetchAuthSession();
   const idToken = tokens?.idToken;
-  if (!idToken) {
+  const accessToken = tokens?.accessToken;
+  if (!idToken || !accessToken) {
     return null;
   }
-  return { token: idToken.toString(), usuario: usuarioDesdeClaims(idToken.payload) };
+  // El backend solo acepta access tokens (token_use=access); el nombre y el correo vienen en el ID token
+  return { token: accessToken.toString(), usuario: usuarioDesdeClaims(idToken.payload) };
 }
 
 export async function iniciarSesionCognito(username: string, password: string): Promise<Sesion> {

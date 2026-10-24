@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import type { InputHTMLAttributes, ReactNode } from "react";
+import type { FormEvent, InputHTMLAttributes, ReactNode } from "react";
 import { Link } from "wouter";
 import "../../App.css";
 import styles from "../login/Login.module.css";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import { confirmarRegistro, mensajeDeRegistro, reenviarCodigo, registrarUsuario } from "../../api/registro";
 
 type NombreCampo = "nombre" | "correo" | "password" | "confirmar";
 type Valores = Record<NombreCampo, string>;
@@ -95,26 +96,52 @@ const ICONOS: Record<NombreCampo, ReactNode> = {
   ),
 };
 
+const Alerta = ({ children }: { children: ReactNode }) => (
+  <div className={styles.alerta} role="alert">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 8v4" />
+      <path d="M12 16h.01" />
+    </svg>
+    <span>{children}</span>
+  </div>
+);
+
+const Flecha = () => (
+  <svg className={styles.flecha} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M5 12h14" />
+    <path d="m12 5 7 7-7 7" />
+  </svg>
+);
+
+// formulario → (backend crea la cuenta en Cognito + BD) → confirmar código del correo → listo
+type Etapa = "formulario" | "confirmar" | "listo";
+
 const Register = () => {
-
-  const [, setPersonajes] = useState([]);
-  const [llamarApi] = useState(false);
-  useEffect(() => {
-    fetch("https://rickandmortyapi.com/api/character").then(async (e) => {
-      const res = await e.json();
-      console.log(res);
-      setPersonajes(res.results);
-    });
-  }, [llamarApi]);
-
   useDocumentTitle("Crear cuenta");
 
   const [valores, setValores] = useState<Valores>({ nombre: "", correo: "", password: "", confirmar: "" });
   const [errores, setErrores] = useState<Errores>({});
   const [tocados, setTocados] = useState<Partial<Record<NombreCampo, boolean>>>({});
   const [verPassword, setVerPassword] = useState(false);
-  const [registrado, setRegistrado] = useState(false);
+  const [etapa, setEtapa] = useState<Etapa>("formulario");
+  const [enviando, setEnviando] = useState(false);
+  const [errorServidor, setErrorServidor] = useState<string | null>(null);
+  const [aviso, setAviso] = useState<string | null>(null);
+  // Correo de la cuenta por confirmar; si se llega desde "Confirma tu cuenta" se escribe a mano
+  const [correoPendiente, setCorreoPendiente] = useState("");
+  const [correoDesdeRegistro, setCorreoDesdeRegistro] = useState(false);
+  const [codigo, setCodigo] = useState("");
+  const [errorConfirmacion, setErrorConfirmacion] = useState<{ correo?: string; codigo?: string }>({});
   const refs = useRef<Partial<Record<NombreCampo, HTMLInputElement | null>>>({});
+  const refCodigo = useRef<HTMLInputElement | null>(null);
+  const refCorreoPendiente = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (etapa === "confirmar") {
+      (correoDesdeRegistro ? refCodigo : refCorreoPendiente).current?.focus();
+    }
+  }, [etapa, correoDesdeRegistro]);
 
   const cumplidos = REQUISITOS.filter((r) => r.cumple(valores.password)).length;
 
@@ -137,7 +164,7 @@ const Register = () => {
     setErrores((prev) => ({ ...prev, [campo]: validar(campo, valores) }));
   };
 
-  const enviar = (e: { preventDefault: () => void }) => {
+  const enviar = async (e: FormEvent) => {
     e.preventDefault();
     const nuevos: Errores = {};
     for (const campo of ORDEN) nuevos[campo] = validar(campo, valores);
@@ -149,8 +176,86 @@ const Register = () => {
       refs.current[primero]?.focus();
       return;
     }
-    // TODO: conectar con el registro real (Cognito SignUp). Por ahora solo se valida en el navegador.
-    setRegistrado(true);
+
+    setEnviando(true);
+    setErrorServidor(null);
+    try {
+      const correo = valores.correo.trim();
+      await registrarUsuario({ nombre: valores.nombre.trim(), email: correo, password: valores.password });
+      setCorreoPendiente(correo);
+      setCorreoDesdeRegistro(true);
+      setAviso(null);
+      setEtapa("confirmar");
+    } catch (error) {
+      setErrorServidor(mensajeDeRegistro(error));
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  const irAConfirmar = () => {
+    setCorreoPendiente(valores.correo.trim());
+    setCorreoDesdeRegistro(false);
+    setErrorServidor(null);
+    setAviso(null);
+    setErrorConfirmacion({});
+    setEtapa("confirmar");
+  };
+
+  const volverAlFormulario = () => {
+    setErrorServidor(null);
+    setAviso(null);
+    setEtapa("formulario");
+  };
+
+  const validarCorreoPendiente = (): string | undefined => {
+    const error = validar("correo", { ...valores, correo: correoPendiente });
+    if (error) {
+      setErrorConfirmacion({ correo: error });
+      refCorreoPendiente.current?.focus();
+    }
+    return error;
+  };
+
+  const confirmar = async (e: FormEvent) => {
+    e.preventDefault();
+    setErrorServidor(null);
+    setAviso(null);
+    if (validarCorreoPendiente()) return;
+    const codigoLimpio = codigo.trim();
+    if (!/^\d{6}$/.test(codigoLimpio)) {
+      setErrorConfirmacion({ codigo: "El código tiene 6 dígitos. Lo encuentras en el correo que te enviamos." });
+      refCodigo.current?.focus();
+      return;
+    }
+    setErrorConfirmacion({});
+
+    setEnviando(true);
+    try {
+      await confirmarRegistro(correoPendiente.trim(), codigoLimpio);
+      setEtapa("listo");
+    } catch (error) {
+      setErrorServidor(mensajeDeRegistro(error));
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  const pedirOtroCodigo = async () => {
+    setErrorServidor(null);
+    setAviso(null);
+    if (validarCorreoPendiente()) return;
+    setErrorConfirmacion({});
+
+    setEnviando(true);
+    try {
+      await reenviarCodigo(correoPendiente.trim());
+      setAviso(`Te enviamos un nuevo código a ${correoPendiente.trim()}.`);
+    } catch (error) {
+      setErrorServidor(mensajeDeRegistro(error));
+    } finally {
+      setEnviando(false);
+    }
   };
 
   const campo = (
@@ -198,6 +303,24 @@ const Register = () => {
       <IconoOjo visible={verPassword} />
     </button>
   );
+
+  const botonPrincipal = (texto: string, textoEnviando: string) => (
+    <button type="submit" className={styles.botonEnviar} disabled={enviando}>
+      {enviando ? (
+        <>
+          <span className={styles.spinner} aria-hidden="true" />
+          {textoEnviando}
+        </>
+      ) : (
+        <>
+          {texto}
+          <Flecha />
+        </>
+      )}
+    </button>
+  );
+
+  const primerNombre = valores.nombre.trim().split(" ")[0];
 
   return (
     <div className={styles.layout}>
@@ -271,27 +394,117 @@ const Register = () => {
           </section>
 
           <section className={styles.formulario} aria-labelledby="tituloRegistro">
-            {registrado ? (
+            {etapa === "listo" ? (
               <div className={styles.exito} role="status">
                 <span className={styles.exitoIcono}>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M20 6 9 17l-5-5" />
                   </svg>
                 </span>
-                <h1 id="tituloRegistro" className={styles.titulo}>¡Todo listo, {valores.nombre.trim().split(" ")[0]}!</h1>
-                <p className={styles.subtitulo}>Tus datos están correctos. Ahora inicia sesión para empezar.</p>
+                <h1 id="tituloRegistro" className={styles.titulo}>¡Todo listo{primerNombre ? `, ${primerNombre}` : ""}!</h1>
+                <p className={styles.subtitulo}>Tu cuenta está confirmada. Ahora inicia sesión para empezar.</p>
                 <Link className={styles.botonEnviar} href="/login">
                   Ir a iniciar sesión
-                  <svg className={styles.flecha} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
-                  </svg>
+                  <Flecha />
                 </Link>
               </div>
+            ) : etapa === "confirmar" ? (
+              <>
+                <h1 id="tituloRegistro" className={styles.titulo}>Confirma tu cuenta</h1>
+                <p className={styles.subtitulo}>
+                  {correoDesdeRegistro ? (
+                    <>Te enviamos un código de 6 dígitos a <strong>{correoPendiente}</strong>. Escríbelo aquí para activar tu cuenta.</>
+                  ) : (
+                    "Escribe tu correo y el código de 6 dígitos que te enviamos al registrarte."
+                  )}
+                </p>
+
+                {errorServidor && <Alerta>{errorServidor}</Alerta>}
+                {aviso && <p className={styles.aviso} role="status">{aviso}</p>}
+
+                <form noValidate onSubmit={confirmar}>
+                  {!correoDesdeRegistro && (
+                    <div className={styles.campo}>
+                      <label className={styles.label} htmlFor="correoPendiente">Correo electrónico</label>
+                      <div className={styles.controlEnvoltura}>
+                        <span className={styles.iconoCampo}>{ICONOS.correo}</span>
+                        <input
+                          ref={refCorreoPendiente}
+                          id="correoPendiente"
+                          name="correoPendiente"
+                          type="email"
+                          autoComplete="email"
+                          inputMode="email"
+                          autoCapitalize="none"
+                          spellCheck={false}
+                          placeholder="nombre@correo.cl"
+                          className={[styles.input, errorConfirmacion.correo ? styles.inputInvalido : ""].join(" ")}
+                          value={correoPendiente}
+                          onChange={(e) => setCorreoPendiente(e.target.value)}
+                          aria-invalid={Boolean(errorConfirmacion.correo)}
+                          aria-describedby={errorConfirmacion.correo ? "correoPendiente-error" : undefined}
+                          required
+                        />
+                      </div>
+                      {errorConfirmacion.correo && (
+                        <p id="correoPendiente-error" className={styles.error}>
+                          <IconoError />
+                          {errorConfirmacion.correo}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  <div className={styles.campo}>
+                    <label className={styles.label} htmlFor="codigo">Código de verificación</label>
+                    <div className={styles.controlEnvoltura}>
+                      <span className={styles.iconoCampo}>{ICONOS.confirmar}</span>
+                      <input
+                        ref={refCodigo}
+                        id="codigo"
+                        name="codigo"
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        maxLength={6}
+                        placeholder="123456"
+                        className={[styles.input, errorConfirmacion.codigo ? styles.inputInvalido : ""].join(" ")}
+                        value={codigo}
+                        onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ""))}
+                        aria-invalid={Boolean(errorConfirmacion.codigo)}
+                        aria-describedby={errorConfirmacion.codigo ? "codigo-error" : undefined}
+                        required
+                      />
+                    </div>
+                    {errorConfirmacion.codigo && (
+                      <p id="codigo-error" className={styles.error}>
+                        <IconoError />
+                        {errorConfirmacion.codigo}
+                      </p>
+                    )}
+                  </div>
+
+                  {botonPrincipal("Confirmar cuenta", "Confirmando…")}
+                </form>
+
+                <div className={styles.separador}>¿No te llegó el código?</div>
+                <p className={styles.registro}>
+                  <button type="button" className={styles.botonEnlace} onClick={pedirOtroCodigo} disabled={enviando}>
+                    Enviar otro código
+                  </button>
+                </p>
+                <p className={styles.registro}>
+                  <button type="button" className={styles.botonEnlace} onClick={volverAlFormulario}>
+                    Volver al registro
+                  </button>
+                </p>
+              </>
             ) : (
               <>
                 <h1 id="tituloRegistro" className={styles.titulo}>Crea tu cuenta</h1>
                 <p className={styles.subtitulo}>Todos los campos son obligatorios.</p>
+
+                {errorServidor && <Alerta>{errorServidor}</Alerta>}
 
                 <form noValidate onSubmit={enviar}>
                   {campo("nombre", "Nombre completo", { type: "text", autoComplete: "name", placeholder: "Ana Muñoz Pérez" })}
@@ -330,17 +543,17 @@ const Register = () => {
                     type: verPassword ? "text" : "password", autoComplete: "new-password",
                   })}
 
-                  <button type="submit" className={styles.botonEnviar}>
-                    Crear cuenta
-                    <svg className={styles.flecha} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M5 12h14" />
-                      <path d="m12 5 7 7-7 7" />
-                    </svg>
-                  </button>
+                  {botonPrincipal("Crear cuenta", "Creando tu cuenta…")}
                 </form>
 
                 <div className={styles.separador}>¿Ya tienes cuenta?</div>
                 <p className={styles.registro}><Link href="/login">Inicia sesión</Link></p>
+                <p className={styles.registro}>
+                  ¿Te registraste y tienes un código?{" "}
+                  <button type="button" className={styles.botonEnlace} onClick={irAConfirmar}>
+                    Confirma tu cuenta
+                  </button>
+                </p>
               </>
             )}
           </section>
