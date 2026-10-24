@@ -5,3 +5,6 @@ dist
 !.vscode/extensions.json
 .DS_Store
 *.log
+
+# Llaves privadas
+*.pem

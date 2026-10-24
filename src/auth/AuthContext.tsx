@@ -7,10 +7,13 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { login, perfil, type Usuario } from "../api/auth";
-import { ApiError } from "../api/client";
-
-const TOKEN_KEY = "syncpass_token";
+import {
+  cerrarSesionCognito,
+  CognitoError,
+  iniciarSesionCognito,
+  obtenerSesion,
+  type Usuario,
+} from "./cognito";
 
 export interface AuthContextValue {
   token: string | null;
@@ -33,30 +36,23 @@ export function useAuth(): AuthContextValue {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(() => sessionStorage.getItem(TOKEN_KEY));
+  const [token, setToken] = useState<string | null>(null);
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Amplify guarda la sesión de Cognito en localStorage y renueva los tokens solo
   useEffect(() => {
-    const tokenGuardado = sessionStorage.getItem(TOKEN_KEY);
-    if (!tokenGuardado) {
-      setToken(null);
-      return;
-    }
-
     let activo = true;
     void (async () => {
       try {
-        const usuarioPerfil = await perfil(tokenGuardado);
-        if (activo) {
-          setUsuario(usuarioPerfil);
+        const sesion = await obtenerSesion();
+        if (activo && sesion) {
+          setToken(sesion.token);
+          setUsuario(sesion.usuario);
         }
       } catch {
-        if (activo) {
-          sessionStorage.removeItem(TOKEN_KEY);
-          setToken(null);
-        }
+        // Sin sesión válida: se queda como visitante
       }
     })();
 
@@ -70,14 +66,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       setError(null);
       try {
-        const respuesta = await login(username, password);
-        setToken(respuesta.token);
-        setUsuario(respuesta.usuario);
-        sessionStorage.setItem(TOKEN_KEY, respuesta.token);
+        const sesion = await iniciarSesionCognito(username, password);
+        setToken(sesion.token);
+        setUsuario(sesion.usuario);
         return true;
       } catch (e) {
         setError(
-          e instanceof ApiError
+          e instanceof CognitoError
             ? e.message
             : "No pudimos conectar con el servidor de autenticación. Revisa tu conexión e intenta de nuevo.",
         );
@@ -92,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const cerrarSesion = useCallback(() => {
     setToken(null);
     setUsuario(null);
-    sessionStorage.removeItem(TOKEN_KEY);
+    void cerrarSesionCognito();
   }, []);
 
   const isAuthenticated = token !== null;
