@@ -1,6 +1,6 @@
 # Registro de usuarios con Cognito + base de datos (especificación para implementar)
 
-> **Estado:** pendiente de implementar. Documento escrito el 2026-10-23.
+> **Estado (2026-10-24):** implementado en código, falta probarlo con Cognito y Supabase reales. Decisiones tomadas con el usuario: backend = [`monolito_backend_syncpass`](https://github.com/feliignaciodev/monolito_backend_syncpass) (no fs2-api); User Pool = el del front (`us-east-1_AwWWrn8Ib`); BD = PostgreSQL en Supabase; rol de registro = `BENEFICIARIO` (rol existente del backend); el registro **pasa por el backend** (`POST /api/auth/registro`, `/registro/confirmar`, `/registro/reenviar-codigo`) en vez de ir directo a Cognito, porque ese backend ya recibe contraseñas en su login y tiene credenciales IAM. El front envía el **access token** al backend. Documento original escrito el 2026-10-23.
 > **Para quién:** una IA (o persona) que va a implementar el registro de usuarios de SyncPass de forma que el usuario quede en **AWS Cognito** y también en una **base de datos propia**, sin las brechas de seguridad del repo de referencia.
 
 ---

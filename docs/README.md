@@ -9,7 +9,8 @@ Guías base del proyecto con Vite + React + TypeScript.
 3. [Crear componentes](./03-componentes.md) — convención con CSS Modules + ejemplos reales (`Button`, `Card`, `Input`, `Menu`).
 4. [Wouter: instalación y configuración](./04-wouter.md) — routing liviano + `base` para GitHub Pages.
 5. [Deploy en GitHub Pages](./05-github-pages.md) — workflow, configuración y errores comunes.
-6. [Registro con Cognito + BD](./06-registro-cognito-bd.md) — especificación pendiente para registrar usuarios en Cognito y en la base de datos sin brechas de seguridad.
+6. [Registro con Cognito + BD](./06-registro-cognito-bd.md) — diseño y requisitos de seguridad para registrar usuarios en Cognito y en la base de datos.
+7. [Registro: qué falta](./07-pendientes-registro.md) — estado actual, tareas pendientes (configuración, pruebas reales, despliegue, seguridad) y preguntas para el usuario.
 
 ## Comandos rápidos
 
