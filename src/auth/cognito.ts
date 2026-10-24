@@ -25,11 +25,14 @@ export interface Sesion {
 
 const MENSAJE_GENERICO = "No pudimos iniciar sesión. Revisa tu conexión e intenta de nuevo.";
 
+// El login lo compara para ofrecer un enlace directo a "Confirma tu cuenta"
+export const MENSAJE_CUENTA_NO_CONFIRMADA =
+  "Tu cuenta aún no está confirmada. Escribe el código de 6 dígitos que enviamos a tu correo.";
+
 const MENSAJES_ERROR: Record<string, string> = {
   NotAuthorizedException: "El usuario o la contraseña no son correctos.",
   UserNotFoundException: "El usuario o la contraseña no son correctos.",
-  UserNotConfirmedException:
-    "Tu cuenta aún no está confirmada. En «Crear cuenta», elige «Confirma tu cuenta» y escribe el código que llegó a tu correo.",
+  UserNotConfirmedException: MENSAJE_CUENTA_NO_CONFIRMADA,
   PasswordResetRequiredException: "Debes restablecer tu contraseña antes de iniciar sesión.",
   TooManyRequestsException: "Hiciste demasiados intentos. Espera unos minutos e intenta de nuevo.",
   LimitExceededException: "Hiciste demasiados intentos. Espera unos minutos e intenta de nuevo.",

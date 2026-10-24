@@ -1,0 +1,206 @@
+/* ---------- Indicador de pasos ---------- */
+.pasos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cada paso mide lo que su texto; las líneas de unión ocupan el espacio sobrante */
+.paso {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+}
+
+.paso:last-child {
+  flex: 0 0 auto;
+}
+
+/* Línea que une cada paso con el siguiente */
+.paso:not(:last-child)::after {
+  content: "";
+  flex: 1;
+  min-width: 0.75rem;
+  height: 2px;
+  background: var(--color-borde);
+  border-radius: 2px;
+}
+
+.paso[data-estado="hecho"]:not(:last-child)::after {
+  background: var(--color-primario);
+}
+
+.pasoMarca {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-texto-suave);
+  background: var(--color-superficie);
+  border: 2px solid var(--color-borde-fuerte);
+  border-radius: 50%;
+  transition: background-color var(--duracion) ease, border-color var(--duracion) ease, color var(--duracion) ease;
+}
+
+.paso[data-estado="actual"] {
+  color: var(--color-primario-fuerte);
+}
+
+.paso[data-estado="actual"] .pasoMarca {
+  color: #fff;
+  background: var(--color-primario);
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 4px var(--color-primario-suave);
+}
+
+.paso[data-estado="hecho"] .pasoMarca {
+  color: #fff;
+  background: var(--color-primario);
+  border-color: var(--color-primario);
+}
+
+.pasoTexto {
+  white-space: nowrap;
+}
+
+/* En pantallas angostas solo se muestra el texto del paso actual */
+@media (max-width: 479.98px) {
+  .paso:not([data-estado="actual"]) .pasoTexto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+}
+
+/* ---------- Campos de a dos (desde 600px de ancho) ---------- */
+.fila {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 599.98px) {
+  .fila {
+    grid-template-columns: 1fr;
+  }
+
+  /* Contraseña y confirmación son cortas y sin texto de ejemplo: siguen de a dos en el teléfono */
+  .filaClaves {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 0.625rem;
+  }
+}
+
+@media (max-width: 339.98px) {
+  .filaClaves {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Seguridad de la contraseña: franja compacta ---------- */
+.seguridad {
+  margin: -0.25rem 0 1rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--color-superficie-alt);
+  border-radius: var(--radio-md);
+}
+
+.seguridadCabecera {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.medidor {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.375rem;
+}
+
+.medidor span {
+  height: 5px;
+  background: var(--color-borde);
+  border-radius: var(--radio-pildora);
+  transition: background-color var(--duracion) ease;
+}
+
+.medidor[data-nivel="1"] span:nth-child(-n + 1) { background: #d92d20; }
+.medidor[data-nivel="2"] span:nth-child(-n + 2) { background: #e04f16; }
+.medidor[data-nivel="3"] span:nth-child(-n + 3) { background: #b54708; }
+.medidor[data-nivel="4"] span { background: var(--color-exito); }
+
+.nivelTexto {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  color: var(--color-texto-suave);
+  white-space: nowrap;
+}
+
+.nivelTexto strong {
+  color: var(--color-texto);
+}
+
+.requisitos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.requisitos li {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--color-texto-suave);
+  transition: color var(--duracion) ease;
+}
+
+.requisitos .requisitoOk {
+  color: var(--color-exito);
+  font-weight: 600;
+}
+
+/* ---------- Pantallas bajas: el formulario completo se ve sin desplazar ---------- */
+@media (max-height: 800px) {
+  .pasos {
+    margin-bottom: 0.875rem;
+  }
+
+  .seguridad {
+    margin-bottom: 0.75rem;
+  }
+
+  /* El indicador de pasos ya anuncia la verificación por correo */
+  .subtituloOpcional {
+    display: none;
+  }
+}
+
+@media (max-height: 640px) {
+  .pasos {
+    margin-bottom: 0.5rem;
+  }
+
+  .seguridad {
+    padding: 0.5rem 0.75rem;
+  }
+}

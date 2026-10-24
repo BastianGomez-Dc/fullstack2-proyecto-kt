@@ -1,0 +1,413 @@
+/* Estilos compartidos por los formularios de inicio de sesión y registro */
+
+.encabezado {
+  margin-bottom: 1.5rem;
+}
+
+/* Enlaces bajo el botón principal (crear cuenta, confirmar): compactos para que el formulario quepa sin desplazar.
+   Si hay ancho, quedan en una sola línea; si no, uno bajo el otro. */
+.enlacesSecundarios {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 1.25rem;
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-borde);
+}
+
+.titulo {
+  font-size: clamp(1.625rem, 1.3rem + 1.2vw, 2rem);
+  font-weight: 800;
+}
+
+.subtitulo {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--color-texto-suave);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 1.125rem;
+}
+
+.etiquetaFila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primario-fuerte);
+}
+
+.control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.iconoCampo {
+  position: absolute;
+  left: 0.875rem;
+  display: flex;
+  color: #6b7a74;
+  pointer-events: none;
+  transition: color var(--duracion-rapida) ease;
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 0.875rem 0.75rem 2.75rem;
+  /* 16px evita el zoom automático de iOS al enfocar */
+  font-size: 1rem;
+  color: var(--color-texto);
+  background: var(--color-superficie);
+  border: 1.5px solid var(--color-borde-fuerte);
+  border-radius: var(--radio-md);
+  transition: border-color var(--duracion-rapida) ease, box-shadow var(--duracion-rapida) ease;
+}
+
+.input::placeholder {
+  color: #7d8b85;
+}
+
+.input:hover {
+  border-color: #8fa39a;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 4px rgba(31, 87, 76, 0.18);
+}
+
+.control:focus-within .iconoCampo {
+  color: var(--color-primario);
+}
+
+.inputConBoton {
+  padding-right: 3.25rem;
+}
+
+.inputInvalido,
+.inputInvalido:hover {
+  border-color: var(--color-error);
+}
+
+.inputInvalido:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 4px rgba(180, 35, 24, 0.15);
+}
+
+.inputCodigo {
+  padding-left: 2.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  font-variant-numeric: tabular-nums;
+}
+
+.botonVer {
+  position: absolute;
+  right: 0.25rem;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: #5c6c66;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radio-sm);
+  cursor: pointer;
+}
+
+.botonVer:hover {
+  color: var(--color-primario);
+  background: var(--color-primario-suave);
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--color-error);
+}
+
+.error svg {
+  margin-top: 1px;
+}
+
+.ayuda {
+  font-size: 0.8125rem;
+  color: var(--color-texto-suave);
+}
+
+/* ---------- Mensajes ---------- */
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  margin-bottom: 1.25rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border: 1px solid;
+  border-radius: var(--radio-md);
+  animation: aparecer var(--duracion) var(--curva-salida);
+}
+
+.alerta svg {
+  margin-top: 1px;
+}
+
+.alerta[data-tipo="error"] {
+  color: var(--color-error);
+  background: var(--color-error-fondo);
+  border-color: var(--color-error-borde);
+}
+
+.alerta[data-tipo="exito"] {
+  color: var(--color-exito);
+  background: var(--color-exito-fondo);
+  border-color: var(--color-exito-borde);
+}
+
+.alertaCuerpo {
+  display: grid;
+  gap: 0.375rem;
+}
+
+.alertaCuerpo a {
+  font-weight: 700;
+  color: inherit;
+}
+
+/* ---------- Botones ---------- */
+.botonPrimario {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 50px;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  background: var(--color-primario);
+  border: 0;
+  border-radius: var(--radio-md);
+  box-shadow: 0 6px 16px -6px rgba(31, 87, 76, 0.6);
+  cursor: pointer;
+  transition: background-color var(--duracion-rapida) ease, transform var(--duracion-rapida) ease,
+    box-shadow var(--duracion-rapida) ease;
+}
+
+.botonPrimario:hover {
+  background: var(--color-primario-fuerte);
+}
+
+.botonPrimario:active {
+  transform: scale(0.985);
+}
+
+.botonPrimario:disabled {
+  cursor: progress;
+  opacity: 0.8;
+}
+
+.botonPrimario .flecha {
+  transition: transform var(--duracion) var(--curva-salida);
+}
+
+.botonPrimario:hover .flecha {
+  transform: translateX(3px);
+}
+
+.botonSecundario {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  color: var(--color-primario-fuerte);
+  text-decoration: none;
+  background: var(--color-superficie);
+  border: 1.5px solid var(--color-borde-fuerte);
+  border-radius: var(--radio-md);
+  cursor: pointer;
+}
+
+.botonSecundario:hover {
+  background: var(--color-primario-suave);
+}
+
+.botonEnlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 44px;
+  padding: 0 0.25rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-primario);
+  background: none;
+  border: 0;
+  border-radius: var(--radio-sm);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.botonEnlace:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.botonEnlace:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: girar 700ms linear infinite;
+}
+
+/* ---------- Pie del formulario ---------- */
+.separador {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.75rem 0 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--color-texto-suave);
+}
+
+.separador::before,
+.separador::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-borde);
+}
+
+.pieFormulario {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.25rem;
+  font-size: 0.9375rem;
+  text-align: center;
+  color: var(--color-texto-suave);
+}
+
+/* ---------- Estado de éxito ---------- */
+.exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  animation: aparecer var(--duracion-lenta) var(--curva-salida);
+}
+
+.exitoIcono {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 0.75rem;
+  color: var(--color-exito);
+  background: var(--color-exito-fondo);
+  border-radius: 50%;
+}
+
+.exito .botonPrimario,
+.exito .botonSecundario {
+  margin-top: 1rem;
+}
+
+.acciones {
+  display: grid;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+.acciones .botonPrimario,
+.acciones .botonSecundario {
+  margin-top: 0;
+}
+
+/* Pantallas bajas: menos aire entre campos para que el formulario (aun con errores) quepa sin desplazar.
+   Los controles se mantienen en 44px, el mínimo recomendado para tocar. */
+@media (max-height: 800px) {
+  .encabezado {
+    margin-bottom: 1.125rem;
+  }
+
+  .titulo {
+    font-size: 1.625rem;
+  }
+
+  .campo {
+    gap: 0.25rem;
+    margin-bottom: 0.875rem;
+  }
+
+  /* El mensaje de error ya separa el campo del siguiente */
+  .campo:has(.error) {
+    margin-bottom: 0.5rem;
+  }
+
+  .input {
+    min-height: 44px;
+    padding-block: 0.5rem;
+  }
+
+  .botonPrimario {
+    min-height: 46px;
+    margin-top: 0.25rem;
+  }
+
+  .enlacesSecundarios {
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+  }
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

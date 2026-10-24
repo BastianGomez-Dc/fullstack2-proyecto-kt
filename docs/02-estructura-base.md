@@ -14,28 +14,38 @@ fs2-react-app/
     icons.svg
     .nojekyll                   # desactiva Jekyll en GitHub Pages
   src/
-    main.tsx                    # entry: monta <App /> en #root
-    App.tsx                     # shell: <Router> + <Menu /> + <Switch> de rutas
-    App.css                     # vacío (reservado)
-    index.css                   # estilos globales (Roboto, reset body)
-    components/                 # UI reutilizable (dumb components)
-      button/Button.tsx + Button.module.css
-      card/Card.tsx + Card.module.css
-      input/Input.tsx + Input.module.css
-      menu/Menu.tsx + Menu.module.css
+    main.tsx                    # entry: monta <App /> dentro de <AuthProvider>
+    App.tsx                     # shell: <Router> + enlace "Saltar al contenido" + <Header /> + <Switch> de rutas
+    index.css                   # tokens de diseño (colores, radios, sombras, movimiento), reset y utilidades globales
+    api/                        # llamadas al backend (client.ts, registro.ts)
+    auth/                       # sesión con Cognito (cognito.ts, AuthContext.tsx)
+    data/                       # datos estáticos (cursos.ts: catálogo de ejemplo)
+    components/                 # UI reutilizable (dumb components), cada uno con su CSS Module
+      header/Header.tsx         # encabezado común: navegación, menú móvil, estado de sesión
+      footer/Footer.tsx         # pie de página
+      logo/Logo.tsx             # isotipo + nombre
+      icon/Icon.tsx             # set de íconos SVG (<Icon nombre="qr" />)
+      pass/PassCard.tsx         # ilustración del pase digital con QR (decorativa)
+      auth-layout/AuthLayout.tsx # diseño de login y registro: panel de marca + formulario
+      form/                     # Form.module.css compartido, Alerta.tsx, BotonEnvio.tsx
+      button/ card/ input/ menu/ # componentes de ejemplo de la guía 03 (no se usan en las páginas)
     pages/                      # vistas asociadas a rutas (smart components)
       home/Home.tsx             # ruta /
       login/Login.tsx           # ruta /login
-      register/Register.tsx     # ruta /register
+      register/Register.tsx     # ruta /register (también /register?confirmar=1)
+      not-found/NotFound.tsx    # cualquier otra ruta
+      hooks/useDocumentTitle.ts
   dist/                         # build (generado, no se commitea)
 ```
 
 ## Convención
 
-- `components/`: piezas reutilizables sin noción de ruta. Reciben props (`Button`, `Card`, `Input`, `Menu`).
-- `pages/`: una carpeta por vista, con el nombre capitalizado igual que el componente (`home/Home.tsx` → `Home`).
-- Cada componente visual vive con su CSS Module al lado: `Button.tsx` + `Button.module.css`.
-- `App.tsx` es solo composición: layout (`Menu`) + ruteo (`Switch`/`Route`). No lleva lógica de negocio.
+- `components/`: piezas reutilizables sin noción de ruta. Reciben props (`Header`, `AuthLayout`, `Icon`...).
+- `pages/`: una carpeta por vista, con el nombre capitalizado igual que el componente (`home/Home.tsx` → `Home`). Cada página pone su propio `<main id="contenido">`.
+- Cada componente visual vive con su CSS Module al lado: `Header.tsx` + `Header.module.css`.
+- Los colores, radios, sombras y duraciones salen de los tokens de `index.css` (`var(--color-primario)`, `var(--radio-md)`...). No se escriben colores sueltos en los componentes.
+- Los íconos se agregan en `components/icon/Icon.tsx` y se usan con `<Icon nombre="..." />`; no se copian SVG en las páginas.
+- `App.tsx` es solo composición: layout (`Header`) + ruteo (`Switch`/`Route`). No lleva lógica de negocio.
 - `main.tsx` no se toca salvo para providers globales (tema, store, etc.).
 
 ## Cómo iniciar el proyecto (clon fresco)

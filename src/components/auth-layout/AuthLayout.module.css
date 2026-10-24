@@ -1,0 +1,197 @@
+.pagina {
+  flex: 1;
+  display: flex;
+  padding: clamp(0rem, -1rem + 4vw, 2.5rem);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(242, 197, 0, 0.12), transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(31, 87, 76, 0.1), transparent 45%),
+    var(--color-fondo);
+}
+
+.tarjeta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  flex: 1;
+  width: 100%;
+  max-width: 1080px;
+  margin: auto;
+  overflow: hidden;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-xl);
+  box-shadow: var(--sombra-md);
+  animation: aparecer var(--duracion-lenta) var(--curva-salida);
+}
+
+/* ---------- Panel de marca ---------- */
+.panel {
+  /* Las muescas del pase toman el color de este panel */
+  --fondo-muesca: var(--color-primario-fuerte);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2.75rem;
+  color: #d5e2dc;
+  background:
+    radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.08), transparent 40%),
+    linear-gradient(160deg, var(--color-primario) 0%, var(--color-primario-fuerte) 70%);
+  overflow: hidden;
+}
+
+.panelTitulo {
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 1.875rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.panelTexto {
+  margin-top: 0.75rem;
+  max-width: 26rem;
+  line-height: 1.6;
+}
+
+.pase {
+  align-self: center;
+  max-width: 320px;
+  transform: rotate(-3deg);
+}
+
+.beneficios {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-weight: 500;
+}
+
+.beneficios li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.beneficioIcono {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  color: var(--color-acento);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radio-sm);
+}
+
+/* ---------- Formulario ---------- */
+.formulario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.75rem 2.5rem;
+}
+
+.formularioInterior {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* Variante amplia: el formulario gana espacio para poner los campos de a dos */
+.tarjeta[data-amplio] {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  max-width: 1160px;
+}
+
+.tarjeta[data-amplio] .formularioInterior {
+  max-width: 560px;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ---------- Responsive: el formulario va primero ---------- */
+@media (max-width: 899.98px) {
+  .tarjeta,
+  .tarjeta[data-amplio] {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+  }
+
+  .tarjeta[data-amplio] {
+    max-width: 640px;
+  }
+
+  .panel {
+    display: none;
+  }
+}
+
+@media (max-width: 559.98px) {
+  .tarjeta {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .formulario {
+    align-items: flex-start;
+    padding: 1.25rem 1rem 1.5rem;
+  }
+}
+
+/* ---------- Pantallas bajas (notebooks): el formulario se ve completo sin desplazar ----------
+   El panel de marca cede espacio en orden: beneficios → tamaño del pase → pase. El formulario nunca se recorta. */
+@media (max-height: 940px) {
+  .beneficios {
+    display: none;
+  }
+
+  .panel {
+    justify-content: center;
+  }
+}
+
+@media (min-width: 900px) and (max-height: 800px) {
+  .pagina {
+    padding: 1rem;
+  }
+
+  .panel {
+    gap: 1.5rem;
+    padding: 2rem 2.25rem;
+  }
+
+  .panelTitulo {
+    font-size: 1.375rem;
+  }
+
+  .pase {
+    zoom: 0.8;
+  }
+
+  .formulario {
+    padding: 1.75rem 2.5rem;
+  }
+}
+
+@media (min-width: 900px) and (max-height: 640px) {
+  .pagina {
+    padding: 0.5rem 1rem;
+  }
+
+  .pase {
+    display: none;
+  }
+
+  .formulario {
+    padding: 1rem 2.5rem;
+  }
+}

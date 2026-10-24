@@ -1,213 +1,168 @@
-import type { ReactNode } from "react";
 import { Link } from "wouter";
-import "../../App.css";
-import styles from "./Home.module.css";
-import Footer from "../../components/footer/footer";
+import { useAuth } from "../../auth/AuthContext";
+import Footer from "../../components/footer/Footer";
+import Icon, { type NombreIcono } from "../../components/icon/Icon";
+import PassCard from "../../components/pass/PassCard";
+import { CURSOS } from "../../data/cursos";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import styles from "./Home.module.css";
 
-const Cursos = [
+const PUBLICOS: Array<{ titulo: string; texto: string; icono: NombreIcono; puntos: string[] }> = [
   {
-    nombre: "Curso 1",
-    descripcion: "Descripcion curso 1.",
-    precio: "$16.990",
-    imagen: "",
-    alt: "Imagen de referencia a un curso",
-    etiqueta: "Cursos",
+    titulo: "Para participantes",
+    texto: "Todo lo que necesitas para llegar a tu curso, en tu teléfono.",
+    icono: "usuario",
+    puntos: [
+      "Inscríbete en línea desde el catálogo de cursos",
+      "Recibe tu propio código QR para acreditar la entrada",
+      "Muestra el código al llegar y entra sin filas ni papeles",
+    ],
   },
   {
-    nombre: "Curso 2",
-    descripcion: "Descripcion curso 2.",
-    precio: "$14.990",
-    imagen: "",
-    alt: "Imagen de referencia a un pack de cursos",
-    etiqueta: "Cursos",
-  },
-  {
-    nombre: "Pack curso",
-    descripcion: "Descripcion oferta cursos.",
-    precio: "$9.990",
-    imagen: "",
-    alt: "Imagen de referencia a un pack de cursos",
-    etiqueta: "Cursos",
-    unidad: "c/u",
+    titulo: "Para organizadores",
+    texto: "Controla la asistencia de cada curso sin planillas.",
+    icono: "usuarios",
+    puntos: [
+      "Registra el curso y prepara la lista de participantes",
+      "Escanea los códigos y acredita la asistencia en el acto",
+      "Guarda los registros sin conexión y sincroniza cuando hay red",
+    ],
   },
 ];
 
-const BENEFICIOS = [
-  {
-    titulo: "Inscripción online",
-    texto: "Registra a los participantes directamente desde el catálogo de cursos.",
-    icono: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <rect x="2" y="3" width="20" height="14" rx="2" />
-        <path d="M8 3V1h8v2" />
-        <path d="M6 8h.01M10 8h.01M14 8h.01M6 12h.01M10 12h.01M14 12h.01" />
-      </svg>
-    ),
-  },
-  {
-    titulo: "Código QR",
-    texto: "Cada asistente recibe su propio código para acreditar la entrada.",
-    icono: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <rect x="3" y="3" width="7" height="7" rx="1" />
-        <rect x="14" y="3" width="7" height="7" rx="1" />
-        <rect x="14" y="14" width="7" height="7" rx="1" />
-        <path d="M21 3h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h7" />
-        <path d="M21 21h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h7" />
-        <path d="M3 14v7a2 2 0 0 0 2 2h7" />
-      </svg>
-    ),
-  },
-  {
-    titulo: "Escaneo instantáneo",
-    texto: "Registra la asistencia en el momento con el lector de QR.",
-    icono: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M3 7V5a2 2 0 0 1 2-2h2" />
-        <path d="M17 3h2a2 2 0 0 1 2 2v2" />
-        <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
-        <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
-        <path d="M7 12h10" />
-      </svg>
-    ),
-  },
-  {
-    titulo: "Sincronización sin conexión",
-    texto: "Guarda los eventos y sincroniza con el registro cuando hay red.",
-    icono: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M17 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7" />
-        <path d="M17 2v5h5" />
-        <path d="M7 22v-5H2v-5" />
-        <path d="M7 13v4a2 2 0 0 0 2 2h4" />
-      </svg>
-    ),
-  },
+const PASOS: Array<{ titulo: string; texto: string; icono: NombreIcono }> = [
+  { titulo: "Registra tu curso", texto: "Deja constancia del programa y prepara la lista de participantes.", icono: "lista" },
+  { titulo: "Genera el código QR", texto: "Cada inscrito recibe su código para acreditar la asistencia.", icono: "qr" },
+  { titulo: "Escanea y acredita", texto: "Registra la entrada en el acto y sincroniza los datos.", icono: "escanear" },
 ];
 
-const PASOS = [
-  { titulo: "Registra tu curso", texto: "Deja constancia del programa y prepara la lista de participantes." },
-  { titulo: "Genera el código QR", texto: "Cada inscrito recibe su código para acreditar la asistencia." },
-  { titulo: "Escanea y acredita", texto: "Registra la entrada en el acto y sincroniza los datos." },
+const PREGUNTAS = [
+  {
+    pregunta: "¿Cómo creo mi cuenta?",
+    respuesta:
+      "Entra a «Crear cuenta» y escribe tu nombre, tu correo y una contraseña. Te enviaremos un código de 6 dígitos al correo para confirmar que es tuyo.",
+  },
+  {
+    pregunta: "No me llegó el código de verificación, ¿qué hago?",
+    respuesta:
+      "Revisa la carpeta de spam o correo no deseado. En la pantalla de verificación puedes pedir un código nuevo con «Enviar otro código».",
+  },
+  {
+    pregunta: "¿Cómo se acredita mi asistencia?",
+    respuesta:
+      "Cada inscrito tiene su código QR. Al llegar al curso, el equipo lo escanea y la asistencia queda registrada en el momento.",
+  },
 ];
-
-const Icono = ({ children, size = 22 }: { children: ReactNode; size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    {children}
-  </svg>
-);
-
-const Flecha = () => (
-  <svg className={styles.flecha} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M5 12h14" />
-    <path d="m12 5 7 7-7 7" />
-  </svg>
-);
 
 const Home = () => {
   useDocumentTitle("SyncPass");
+  const { isAuthenticated } = useAuth();
+
   return (
     <>
-      <header>
-        <nav className="navbar navbar-expand-lg navbar-tienda">
-          <div className="container">
-            <Link className="marca" href="/">SyncPass</Link>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-label="Abrir menú">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse justify-content-end" id="menu">
-              <ul className="navbar-nav">
-                <li className="nav-item"><Link className="nav-link activo" href="/" aria-current="page">Inicio</Link></li>
-                <li className="nav-item"><a className="nav-link" href="#cursos">Cursos</a></li>
-                <li className="nav-item"><Link className="nav-link" href="/login">Iniciar sesión</Link></li>
-                <li className="nav-item"><Link className="nav-link " href="/register">Crear cuenta</Link></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </header>
-
-      <main className={styles.pagina}>
+      <main id="contenido" className={styles.pagina}>
         {/* ---------- Portada ---------- */}
-        <section className={styles.portada}>
-          <div className={`container ${styles.portadaGrid}`}>
+        <section className={styles.portada} aria-labelledby="tituloPortada">
+          <div className={`container ${styles.portadaGrilla}`}>
             <div className={styles.portadaTexto}>
               <span className={styles.etiqueta}>
-                <Icono size={16}>{BENEFICIOS[0].icono}</Icono>
+                <Icon nombre="qr" tamano={16} />
                 Inscripción y acreditación con QR
               </span>
-              <h1 className={styles.titulo}>De tu curso a la acreditación <span>en minutos.</span></h1>
+              <h1 id="tituloPortada" className={styles.titulo}>
+                De tu curso a la acreditación <span>en minutos.</span>
+              </h1>
               <p className={styles.bajada}>
-                Registra la participación de tu curso, genera el código QR de cada asistente y acredita la entrada en el acto. Sin papeleo, sin filas, sin complicaciones.
+                Registra la participación de tu curso, genera el código QR de cada asistente y acredita la entrada en el acto.
+                Sin papeleo, sin filas, sin complicaciones.
               </p>
               <div className={styles.acciones}>
                 <a className={styles.botonPrimario} href="#cursos">
                   Ver los cursos
-                  <Flecha />
+                  <Icon nombre="flechaDerecha" tamano={18} className={styles.flecha} />
                 </a>
-                <Link className={styles.botonSecundario} href="/register">Crear cuenta</Link>
+                {!isAuthenticated && (
+                  <Link className={styles.botonSecundario} href="/register">Crear cuenta gratis</Link>
+                )}
               </div>
               <ul className={styles.confianza}>
-                <li>
-                  <Icono size={18}><path d="M20 6 9 17l-5-5" /></Icono>
-                  Inscripción online
-                </li>
-                <li>
-                  <Icono size={18}><path d="M20 6 9 17l-5-5" /></Icono>
-                  Código QR
-                </li>
-                <li>
-                  <Icono size={18}><path d="M20 6 9 17l-5-5" /></Icono>
-                  Escaneo en el acto
-                </li>
+                {["Inscripción online", "Código QR personal", "Funciona sin conexión"].map((texto) => (
+                  <li key={texto}>
+                    <Icon nombre="checkCirculo" tamano={18} />
+                    {texto}
+                  </li>
+                ))}
               </ul>
+            </div>
+
+            <div className={styles.portadaVisual}>
+              <PassCard className={styles.pase} />
+              <span className={`${styles.flotante} ${styles.flotanteArriba}`} aria-hidden="true">
+                <span className={styles.flotanteIcono}><Icon nombre="check" tamano={16} grosor={3} /></span>
+                Inscripción confirmada
+              </span>
+              <span className={`${styles.flotante} ${styles.flotanteAbajo}`} aria-hidden="true">
+                <span className={styles.flotanteIcono} data-tono="ambar"><Icon nombre="escanear" tamano={16} /></span>
+                Listo para escanear
+              </span>
             </div>
           </div>
         </section>
 
-        {/* ---------- Beneficios ---------- */}
-        <section className={styles.beneficios} aria-label="Por qué SyncPass">
-          <ul className={`container ${styles.beneficiosGrid}`}>
-            {BENEFICIOS.map((b) => (
-              <li key={b.titulo} className={styles.beneficio}>
-                <span className={styles.beneficioIcono}><Icono>{b.icono}</Icono></span>
-                <div>
-                  <p className={styles.beneficioTitulo}>{b.titulo}</p>
-                  <p className={styles.beneficioTexto}>{b.texto}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+        {/* ---------- Para quién ---------- */}
+        <section className={styles.seccion} aria-labelledby="tituloPublicos">
+          <div className="container">
+            <div className={styles.encabezado}>
+              <p className={styles.antetitulo}>Una plataforma, dos lados</p>
+              <h2 id="tituloPublicos" className={styles.seccionTitulo}>Pensado para quien asiste y para quien organiza</h2>
+            </div>
+            <div className={styles.publicos}>
+              {PUBLICOS.map((p) => (
+                <article key={p.titulo} className={styles.publico}>
+                  <span className={styles.publicoIcono}><Icon nombre={p.icono} tamano={22} /></span>
+                  <h3 className={styles.publicoTitulo}>{p.titulo}</h3>
+                  <p className={styles.publicoTexto}>{p.texto}</p>
+                  <ul className={styles.puntos}>
+                    {p.puntos.map((punto) => (
+                      <li key={punto}>
+                        <Icon nombre="check" tamano={16} grosor={2.5} />
+                        {punto}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* ---------- Catálogo ---------- */}
-        <section className={styles.seccion} id="cursos" aria-labelledby="tituloCatalogo">
+        <section className={`${styles.seccion} ${styles.seccionSuave}`} id="cursos" aria-labelledby="tituloCatalogo">
           <div className="container">
             <div className={styles.encabezado}>
               <p className={styles.antetitulo}>Nuestros cursos</p>
-              <h2 id="tituloCatalogo" className={styles.seccionTitulo}>Elige tu práctica</h2>
-              <p className={styles.seccionTexto}>Cada práctica se prepara sobre una base personalizada y se acredita con código QR.</p>
+              <h2 id="tituloCatalogo" className={styles.seccionTitulo}>Elige tu próximo curso</h2>
+              <p className={styles.seccionTexto}>Cada curso se acredita con código QR al momento de llegar.</p>
             </div>
 
-            <ul className={styles.productos}>
-              {Cursos.map((p) => (
-                <li key={p.nombre}>
-                  <article className={styles.producto}>
-                    <div className={styles.productoImagen}>
-                      <img src={p.imagen} alt={p.alt} width="993" height="994" loading="lazy" decoding="async" />
+            <ul className={styles.cursos}>
+              {CURSOS.map((curso) => (
+                <li key={curso.nombre}>
+                  <article className={styles.curso}>
+                    <div className={styles.cursoPortada} data-tono={curso.tono} aria-hidden="true">
+                      <Icon nombre={curso.icono} tamano={40} grosor={1.6} />
                     </div>
-                    <div className={styles.productoCuerpo}>
-                      <span className={styles.productoEtiqueta}>{p.etiqueta}</span>
-                      <h3 className={styles.productoNombre}>{p.nombre}</h3>
-                      <p className={styles.productoTexto}>{p.descripcion}</p>
-                      <div className={styles.productoPie}>
+                    <div className={styles.cursoCuerpo}>
+                      <span className={styles.cursoEtiqueta}>{curso.etiqueta}</span>
+                      <h3 className={styles.cursoNombre}>{curso.nombre}</h3>
+                      <p className={styles.cursoTexto}>{curso.descripcion}</p>
+                      <div className={styles.cursoPie}>
                         <p className={styles.precio}>
-                          {p.precio}
-                          {p.unidad && <span> {p.unidad}</span>}
+                          {curso.precio}
+                          {curso.unidad && <span> {curso.unidad}</span>}
                         </p>
-                        <Link className={styles.botonComprar} href="/register">
-                          Inscribirme<span className={styles.srOnly}> {p.nombre}</span>
+                        <Link className={styles.botonInscribir} href="/register">
+                          Inscribirme<span className="sr-only"> en {curso.nombre}</span>
                         </Link>
                       </div>
                     </div>
@@ -219,7 +174,7 @@ const Home = () => {
         </section>
 
         {/* ---------- Cómo funciona ---------- */}
-        <section className={`${styles.seccion} ${styles.seccionSuave}`} aria-labelledby="tituloPasos">
+        <section className={styles.seccion} id="como-funciona" aria-labelledby="tituloPasos">
           <div className="container">
             <div className={styles.encabezado}>
               <p className={styles.antetitulo}>Cómo funciona</p>
@@ -229,7 +184,10 @@ const Home = () => {
             <ol className={styles.pasos}>
               {PASOS.map((paso, i) => (
                 <li key={paso.titulo} className={styles.paso}>
-                  <span className={styles.pasoNumero} aria-hidden="true">{i + 1}</span>
+                  <div className={styles.pasoCabecera}>
+                    <span className={styles.pasoIcono}><Icon nombre={paso.icono} tamano={22} /></span>
+                    <span className={styles.pasoNumero}>Paso {i + 1}</span>
+                  </div>
                   <h3 className={styles.pasoTitulo}>{paso.titulo}</h3>
                   <p className={styles.pasoTexto}>{paso.texto}</p>
                 </li>
@@ -238,18 +196,47 @@ const Home = () => {
           </div>
         </section>
 
+        {/* ---------- Preguntas frecuentes ---------- */}
+        <section className={`${styles.seccion} ${styles.seccionSuave}`} id="preguntas" aria-labelledby="tituloPreguntas">
+          <div className={`container ${styles.preguntasGrilla}`}>
+            <div className={styles.encabezadoIzquierda}>
+              <p className={styles.antetitulo}>Preguntas frecuentes</p>
+              <h2 id="tituloPreguntas" className={styles.seccionTitulo}>¿Tienes dudas?</h2>
+              <p className={styles.seccionTexto}>Lo esencial para crear tu cuenta y acreditar tu asistencia.</p>
+            </div>
+            <div className={styles.preguntas}>
+              {PREGUNTAS.map((p) => (
+                <details key={p.pregunta} className={styles.pregunta}>
+                  <summary>
+                    {p.pregunta}
+                    <Icon nombre="chevronAbajo" tamano={20} className={styles.preguntaIcono} />
+                  </summary>
+                  <p>{p.respuesta}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ---------- Llamado final ---------- */}
-        <section className={styles.seccion} aria-labelledby="tituloCurso">
+        <section className={styles.seccion} aria-labelledby="tituloLlamado">
           <div className="container">
             <div className={styles.banda}>
               <div>
-                <h2 id="tituloCurso" className={styles.bandaTitulo}>¿Tu curso necesita acreditación QR?</h2>
+                <h2 id="tituloLlamado" className={styles.bandaTitulo}>¿Tu curso necesita acreditación QR?</h2>
                 <p className={styles.bandaTexto}>Registra participantes, genera sus códigos y acredita la asistencia en el acto.</p>
               </div>
-              <Link className={styles.botonBlanco} href="/register">
-                Regístrate gratis
-                <Flecha />
-              </Link>
+              {isAuthenticated ? (
+                <a className={styles.botonAcento} href="#cursos">
+                  Ver los cursos
+                  <Icon nombre="flechaDerecha" tamano={18} className={styles.flecha} />
+                </a>
+              ) : (
+                <Link className={styles.botonAcento} href="/register">
+                  Regístrate gratis
+                  <Icon nombre="flechaDerecha" tamano={18} className={styles.flecha} />
+                </Link>
+              )}
             </div>
           </div>
         </section>

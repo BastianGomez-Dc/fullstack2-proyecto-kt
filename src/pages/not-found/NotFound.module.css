@@ -1,0 +1,62 @@
+.pagina {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 4rem 1rem;
+}
+
+.contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 28rem;
+  text-align: center;
+}
+
+.icono {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  color: var(--color-primario);
+  background: var(--color-primario-suave);
+  border-radius: var(--radio-xl);
+}
+
+.codigo {
+  margin-top: 1.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primario);
+}
+
+.titulo {
+  margin-top: 0.5rem;
+  font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.25rem);
+  font-weight: 800;
+}
+
+.texto {
+  margin-top: 0.75rem;
+  color: var(--color-texto-suave);
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  margin-top: 2rem;
+  padding: 0 1.375rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  background: var(--color-primario);
+  border-radius: var(--radio-pildora);
+}
+
+.boton:hover {
+  background: var(--color-primario-fuerte);
+}

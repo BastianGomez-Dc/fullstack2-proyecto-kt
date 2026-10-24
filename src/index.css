@@ -1,10 +1,176 @@
-* {
-  font-family: "Roboto", sans-serif;
+/* Estilos globales: tokens de diseño, reset y utilidades. Los componentes usan solo estos tokens. */
+:root {
+  /* Marca */
+  --color-primario: #1f574c;
+  --color-primario-fuerte: #163a32;
+  --color-primario-suave: #e7f0ec;
+  --color-primario-borde: #c5d9d1;
+  --color-acento: #f2c500;
+  --color-acento-fuerte: #dcb200;
+  --color-sobre-acento: #163a32;
+
+  /* Superficies y texto */
+  --color-fondo: #f6f8f6;
+  --color-superficie: #ffffff;
+  --color-superficie-alt: #eef3f0;
+  --color-texto: #14261f;
+  --color-texto-suave: #4a5a54;
+  --color-borde: #dde5e1;
+  --color-borde-fuerte: #b5c4bd;
+
+  /* Estados (siempre acompañados de ícono o texto, nunca solo color) */
+  --color-error: #b42318;
+  --color-error-fondo: #fef3f2;
+  --color-error-borde: #fecdca;
+  --color-exito: #067647;
+  --color-exito-fondo: #ecfdf3;
+  --color-exito-borde: #abefc6;
+
+  /* Tipografía */
+  --fuente: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Radios */
+  --radio-sm: 8px;
+  --radio-md: 12px;
+  --radio-lg: 16px;
+  --radio-xl: 24px;
+  --radio-pildora: 999px;
+
+  /* Sombras */
+  --sombra-sm: 0 1px 2px rgba(20, 38, 31, 0.06);
+  --sombra-md: 0 6px 16px -4px rgba(20, 38, 31, 0.1), 0 2px 4px -2px rgba(20, 38, 31, 0.06);
+  --sombra-lg: 0 24px 48px -16px rgba(20, 38, 31, 0.25);
+
+  /* Movimiento */
+  --duracion-rapida: 150ms;
+  --duracion: 200ms;
+  --duracion-lenta: 320ms;
+  --curva-salida: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --ancho-maximo: 1200px;
+  --alto-encabezado: 68px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Los anclas (#cursos) no quedan tapadas por el encabezado fijo */
+  scroll-padding-top: calc(var(--alto-encabezado) + 16px);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  padding: 0;
   margin: 0;
-  background-color: #f7f9f7;
-  color: #163a32;
+  min-height: 100dvh;
+  font-family: var(--fuente);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-primario-fuerte);
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+/* Títulos que reciben el foco por código al cambiar de paso: no muestran anillo */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--ancho-maximo);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* Solo para lectores de pantalla */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Enlace "Saltar al contenido": visible solo al navegar con teclado */
+.saltar-contenido {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-primario-fuerte);
+  border-radius: var(--radio-sm);
+  transform: translateY(-200%);
+}
+
+.saltar-contenido:focus {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

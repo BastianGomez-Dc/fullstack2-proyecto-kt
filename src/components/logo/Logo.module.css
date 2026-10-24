@@ -1,0 +1,25 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 1.1875rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-primario-fuerte);
+}
+
+.fondo {
+  fill: var(--color-primario);
+}
+
+.logo[data-claro] {
+  color: #fff;
+}
+
+.logo[data-claro] .fondo {
+  fill: rgba(255, 255, 255, 0.14);
+}
+
+.texto {
+  line-height: 1;
+}

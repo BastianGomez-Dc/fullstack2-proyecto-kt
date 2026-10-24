@@ -1,0 +1,148 @@
+.pase {
+  --muesca: 14px;
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  color: var(--color-texto);
+  background: var(--color-superficie);
+  border-radius: var(--radio-xl);
+  box-shadow: var(--sombra-lg);
+  overflow: hidden;
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, var(--color-primario) 0%, var(--color-primario-fuerte) 100%);
+}
+
+.chip {
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-sobre-acento);
+  background: var(--color-acento);
+  border-radius: var(--radio-pildora);
+}
+
+.cuerpo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 1.5rem;
+}
+
+.datos {
+  display: grid;
+  gap: 0.875rem;
+  margin: 0;
+}
+
+.datos dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+
+.datos dd {
+  margin: 0.125rem 0 0;
+  font-weight: 700;
+  color: var(--color-primario-fuerte);
+}
+
+.qr {
+  position: relative;
+  flex-shrink: 0;
+  width: 108px;
+  height: 108px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  overflow: hidden;
+}
+
+.qr svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: var(--color-primario-fuerte);
+}
+
+/* Línea de escaneo: se mueve con transform, y se detiene con reduced-motion */
+.lineaEscaneo {
+  position: absolute;
+  inset-inline: 6px;
+  top: 8px;
+  height: 2px;
+  background: var(--color-acento);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--color-acento);
+  animation: escanear 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes escanear {
+  to {
+    transform: translateY(88px);
+  }
+}
+
+/* Perforación del ticket */
+.corte {
+  position: relative;
+  height: 0;
+  margin-inline: 1.25rem;
+  border-top: 2px dashed var(--color-borde);
+}
+
+.corte::before,
+.corte::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--muesca) / -2 - 1px);
+  width: var(--muesca);
+  height: var(--muesca);
+  background: var(--fondo-muesca, var(--color-fondo));
+  border-radius: 50%;
+}
+
+.corte::before {
+  left: calc(-1.25rem - var(--muesca) / 2);
+}
+
+.corte::after {
+  right: calc(-1.25rem - var(--muesca) / 2);
+}
+
+.pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem 1.125rem;
+}
+
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3125rem 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-exito);
+  background: var(--color-exito-fondo);
+  border: 1px solid var(--color-exito-borde);
+  border-radius: var(--radio-pildora);
+}
+
+.pieTexto {
+  font-size: 0.8125rem;
+  color: var(--color-texto-suave);
+}
