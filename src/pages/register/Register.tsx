@@ -2,7 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import type { InputHTMLAttributes, ReactNode, SubmitEvent } from "react";
 import { Link, useSearch } from "wouter";
 import useDocumentTitle from "../hooks/useDocumentTitle";
-import { confirmarRegistro, mensajeDeRegistro, reenviarCodigo, registrarUsuario } from "../../api/registro";
+import {
+  confirmarRegistro,
+  esTelefonoValido,
+  mensajeDeRegistro,
+  normalizarTelefono,
+  reenviarCodigo,
+  registrarUsuario,
+} from "../../api/registro";
 import AuthLayout from "../../components/auth-layout/AuthLayout";
 import Alerta from "../../components/form/Alerta";
 import BotonEnvio from "../../components/form/BotonEnvio";
@@ -10,15 +17,16 @@ import Icon, { type NombreIcono } from "../../components/icon/Icon";
 import form from "../../components/form/Form.module.css";
 import styles from "./Register.module.css";
 
-type NombreCampo = "nombre" | "correo" | "password" | "confirmar";
+type NombreCampo = "nombre" | "correo" | "telefono" | "password" | "confirmar";
 type Valores = Record<NombreCampo, string>;
 type Errores = Partial<Record<NombreCampo, string>>;
 
-const ORDEN: NombreCampo[] = ["nombre", "correo", "password", "confirmar"];
+const ORDEN: NombreCampo[] = ["nombre", "correo", "telefono", "password", "confirmar"];
 
 const ICONOS: Record<NombreCampo, NombreIcono> = {
   nombre: "usuario",
   correo: "correo",
+  telefono: "telefono",
   password: "candado",
   confirmar: "escudo",
 };
@@ -42,6 +50,10 @@ const validar = (campo: NombreCampo, valores: Valores): string | undefined => {
     case "correo":
       if (!valor) return "Escribe tu correo.";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(valor)) return "Formato esperado: nombre@correo.cl";
+      return undefined;
+    case "telefono":
+      if (!valor) return "Escribe tu teléfono.";
+      if (!esTelefonoValido(normalizarTelefono(valor))) return "Formato esperado: +56 9 1234 5678";
       return undefined;
     case "password":
       if (!valores.password) return "Crea una contraseña.";
@@ -100,7 +112,7 @@ const Register = () => {
   // /register?confirmar=1 abre directo el paso de verificación (desde el login o el pie de página)
   const vieneAConfirmar = new URLSearchParams(useSearch()).has("confirmar");
 
-  const [valores, setValores] = useState<Valores>({ nombre: "", correo: "", password: "", confirmar: "" });
+  const [valores, setValores] = useState<Valores>({ nombre: "", correo: "", telefono: "", password: "", confirmar: "" });
   const [errores, setErrores] = useState<Errores>({});
   const [tocados, setTocados] = useState<Partial<Record<NombreCampo, boolean>>>({});
   const [verPassword, setVerPassword] = useState(false);
@@ -153,7 +165,7 @@ const Register = () => {
     const nuevos: Errores = {};
     for (const campo of ORDEN) nuevos[campo] = validar(campo, valores);
     setErrores(nuevos);
-    setTocados({ nombre: true, correo: true, password: true, confirmar: true });
+    setTocados({ nombre: true, correo: true, telefono: true, password: true, confirmar: true });
 
     const primero = ORDEN.find((campo) => nuevos[campo]);
     if (primero) {
@@ -165,7 +177,12 @@ const Register = () => {
     setErrorServidor(null);
     try {
       const correo = valores.correo.trim();
-      await registrarUsuario({ nombre: valores.nombre.trim(), email: correo, password: valores.password });
+      await registrarUsuario({
+        nombre: valores.nombre.trim(),
+        email: correo,
+        telefono: normalizarTelefono(valores.telefono),
+        password: valores.password,
+      });
       setCorreoPendiente(correo);
       setCorreoDesdeRegistro(true);
       setAviso(null);
@@ -408,11 +425,14 @@ const Register = () => {
           {errorServidor && <Alerta>{errorServidor}</Alerta>}
 
           <form noValidate onSubmit={enviar}>
+            {campo("nombre", "Nombre completo", { type: "text", autoComplete: "name", placeholder: "Ana Muñoz Pérez" })}
             <div className={styles.fila}>
-              {campo("nombre", "Nombre completo", { type: "text", autoComplete: "name", placeholder: "Ana Muñoz Pérez" })}
               {campo("correo", "Correo electrónico", {
                 type: "email", autoComplete: "email", inputMode: "email", autoCapitalize: "none", spellCheck: false,
                 placeholder: "nombre@correo.cl",
+              })}
+              {campo("telefono", "Teléfono", {
+                type: "tel", autoComplete: "tel", inputMode: "tel", placeholder: "+56 9 1234 5678",
               })}
             </div>
             <div className={`${styles.fila} ${styles.filaClaves}`}>
