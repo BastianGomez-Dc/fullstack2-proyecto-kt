@@ -1,0 +1,257 @@
+.pagina {
+  flex: 1;
+  padding: clamp(2rem, 5vw, 4rem) 0;
+  background: var(--color-fondo);
+}
+
+.contenido {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 76rem;
+}
+
+.encabezado,
+.seccionEncabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.encabezado h1 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.8rem, 1.4rem + 1.5vw, 2.5rem);
+}
+
+.encabezado > div > p:last-child {
+  color: var(--color-texto-suave);
+}
+
+.antetitulo {
+  margin-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primario);
+}
+
+.seccion,
+.detalle,
+.acceso {
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-sm);
+}
+
+.seccionEncabezado {
+  margin-bottom: 1rem;
+}
+
+.seccionEncabezado h2,
+.detalle h2 {
+  font-size: 1.25rem;
+}
+
+.boton,
+.botonTexto,
+.botonPeligro {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--radio-pildora);
+  cursor: pointer;
+}
+
+.boton {
+  color: #fff;
+  background: var(--color-primario);
+  border: 1px solid var(--color-primario);
+}
+
+.boton:hover {
+  background: var(--color-primario-fuerte);
+}
+
+.botonTexto {
+  color: var(--color-primario-fuerte);
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.botonTexto:hover {
+  background: var(--color-primario-suave);
+}
+
+.botonPeligro {
+  color: var(--color-error);
+  background: var(--color-error-fondo);
+  border: 1px solid var(--color-error-borde);
+}
+
+.botonPeligro:hover {
+  background: #fee4e2;
+}
+
+.boton:disabled,
+.botonTexto:disabled,
+.botonPeligro:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
+.tablaContenedor {
+  overflow-x: auto;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tabla th,
+.tabla td {
+  padding: 0.875rem 0.75rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.tabla th {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+  background: var(--color-superficie-alt);
+}
+
+.tabla td {
+  font-size: 0.875rem;
+}
+
+.tabla tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.estadoBadge {
+  display: inline-flex;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  border-radius: var(--radio-pildora);
+}
+
+.estadoBadge[data-estado="PLANIFICADO"] {
+  color: #175cd3;
+  background: #eff8ff;
+}
+
+.estadoBadge[data-estado="EN_CURSO"] {
+  color: var(--color-exito);
+  background: var(--color-exito-fondo);
+}
+
+.estadoBadge[data-estado="FINALIZADO"] {
+  color: var(--color-texto-suave);
+  background: var(--color-superficie-alt);
+}
+
+.accionesTabla {
+  white-space: nowrap;
+}
+
+.estado,
+.error,
+.exito {
+  padding: 0.75rem 1rem;
+  line-height: 1.5;
+  border-radius: var(--radio-sm);
+}
+
+.estado {
+  color: var(--color-texto-suave);
+  background: var(--color-superficie-alt);
+}
+
+.error {
+  color: var(--color-error);
+  background: var(--color-error-fondo);
+}
+
+.exito {
+  color: var(--color-exito);
+  background: var(--color-exito-fondo);
+}
+
+.detalle {
+  display: grid;
+  gap: 1rem;
+}
+
+.listaDetalle {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.listaDetalle div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.listaDetalle dt {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-texto-suave);
+}
+
+.listaDetalle dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.acceso {
+  width: min(100% - 2rem, 38rem);
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.acceso h1 {
+  font-size: 1.75rem;
+}
+
+.acceso p {
+  margin: 0.75rem 0 1.25rem;
+  color: var(--color-texto-suave);
+}
+
+@media (max-width: 900px) {
+  .tabla {
+    min-width: 58rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .encabezado {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .encabezado > .boton {
+    width: 100%;
+  }
+
+  .listaDetalle {
+    grid-template-columns: 1fr;
+  }
+}

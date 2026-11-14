@@ -11,6 +11,10 @@ Guías base del proyecto con Vite + React + TypeScript.
 5. [Deploy en GitHub Pages](./05-github-pages.md) — workflow, configuración y errores comunes.
 6. [Registro con Cognito + BD](./06-registro-cognito-bd.md) — diseño y requisitos de seguridad para registrar usuarios en Cognito y en la base de datos.
 7. [Registro: qué falta](./07-pendientes-registro.md) — estado actual, tareas pendientes (configuración, pruebas reales, despliegue, seguridad) y preguntas para el usuario.
+8. [Rúbrica EVA3](./08-desarrollo-ev3.md) — requisitos y ponderaciones de la evaluación.
+9. [Panel de notificaciones push](./09-panel-notificaciones.md) — integración web del envío manual de notificaciones y el estado del historial.
+10. [Mantenedor de cursos](./10-mantenedor-cursos.md) — catálogo y operaciones administrativas para cursos/proyectos.
+11. [Estado de avance EVA3](./11-estado-ev3.md) — requisitos comprobados en este repositorio, pendientes y evidencias externas necesarias.
 
 ## Comandos rápidos
 

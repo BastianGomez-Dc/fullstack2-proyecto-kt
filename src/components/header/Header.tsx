@@ -66,6 +66,42 @@ const Header = () => {
                   </a>
                 </li>
               ))}
+              {isAuthenticated && usuario?.rol === "ADMINISTRADOR" && (
+                <li>
+                  <Link
+                    href="/cursos"
+                    className={styles.enlace}
+                    aria-current={actual("/cursos")}
+                    onClick={cerrarMenu}
+                  >
+                    Gestión de cursos
+                  </Link>
+                </li>
+              )}
+              {isAuthenticated && usuario?.rol !== "ADMINISTRADOR" && (
+                <li>
+                  <Link
+                    href="/cursos"
+                    className={styles.enlace}
+                    aria-current={actual("/cursos")}
+                    onClick={cerrarMenu}
+                  >
+                    Cursos
+                  </Link>
+                </li>
+              )}
+              {isAuthenticated && usuario?.rol === "ADMINISTRADOR" && (
+                <li>
+                  <Link
+                    href="/notifications"
+                    className={styles.enlace}
+                    aria-current={actual("/notifications")}
+                    onClick={cerrarMenu}
+                  >
+                    Notificaciones
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
 

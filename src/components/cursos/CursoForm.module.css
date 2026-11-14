@@ -1,0 +1,127 @@
+.formulario {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-sm);
+}
+
+.encabezado {
+  display: grid;
+  gap: 0.375rem;
+}
+
+.encabezado p {
+  color: var(--color-texto-suave);
+}
+
+.grilla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.campo {
+  display: grid;
+  align-content: start;
+  gap: 0.375rem;
+}
+
+.campo label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-primario-fuerte);
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.625rem 0.75rem;
+  color: var(--color-texto);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde-fuerte);
+  border-radius: var(--radio-sm);
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(31, 87, 76, 0.16);
+}
+
+.campo [aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.descripcion {
+  grid-column: 1 / -1;
+}
+
+.error {
+  color: var(--color-error);
+  font-size: 0.8125rem;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.botonPrimario,
+.botonSecundario {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1rem;
+  font-weight: 700;
+  border-radius: var(--radio-pildora);
+  cursor: pointer;
+}
+
+.botonPrimario {
+  color: #fff;
+  background: var(--color-primario);
+  border: 1px solid var(--color-primario);
+}
+
+.botonPrimario:hover {
+  background: var(--color-primario-fuerte);
+}
+
+.botonSecundario {
+  color: var(--color-primario-fuerte);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde-fuerte);
+}
+
+.botonPrimario:disabled,
+.botonSecundario:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+@media (max-width: 640px) {
+  .grilla {
+    grid-template-columns: 1fr;
+  }
+
+  .descripcion {
+    grid-column: auto;
+  }
+
+  .acciones {
+    flex-direction: column-reverse;
+  }
+}

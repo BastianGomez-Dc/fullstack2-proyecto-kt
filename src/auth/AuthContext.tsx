@@ -19,6 +19,7 @@ export interface AuthContextValue {
   token: string | null;
   usuario: Usuario | null;
   isAuthenticated: boolean;
+  isReady: boolean;
   isLoading: boolean;
   error: string | null;
   iniciarSesion: (username: string, password: string) => Promise<boolean>;
@@ -38,6 +39,7 @@ export function useAuth(): AuthContextValue {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [usuario, setUsuario] = useState<Usuario | null>(null);
+  const [isReady, setIsReady] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,6 +55,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       } catch {
         // Sin sesión válida: se queda como visitante
+      } finally {
+        if (activo) {
+          setIsReady(true);
+        }
       }
     })();
 
@@ -97,12 +103,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       token,
       usuario,
       isAuthenticated,
+      isReady,
       isLoading,
       error,
       iniciarSesion,
       cerrarSesion,
     }),
-    [token, usuario, isAuthenticated, isLoading, error, iniciarSesion, cerrarSesion],
+    [token, usuario, isAuthenticated, isReady, isLoading, error, iniciarSesion, cerrarSesion],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
