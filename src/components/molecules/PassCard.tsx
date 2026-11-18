@@ -1,5 +1,5 @@
-import Icon from "../icon/Icon";
-import Logo from "../logo/Logo";
+import Icon from "../atoms/Icon";
+import Logo from "../atoms/Logo";
 import styles from "./PassCard.module.css";
 
 // Ilustración del pase digital. Es decorativa (aria-hidden): el QR no codifica datos reales.

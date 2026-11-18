@@ -1,8 +1,8 @@
 import { Link } from "wouter";
 import { useAuth } from "../../auth/AuthContext";
-import Footer from "../../components/footer/Footer";
-import Icon, { type NombreIcono } from "../../components/icon/Icon";
-import PassCard from "../../components/pass/PassCard";
+import Footer from "../../components/organisms/Footer";
+import Icon, { type NombreIcono } from "../../components/atoms/Icon";
+import PassCard from "../../components/molecules/PassCard";
 import { CURSOS } from "../../data/cursos";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import styles from "./Home.module.css";

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Icon from "../icon/Icon";
+import Icon from "../atoms/Icon";
 import styles from "./Form.module.css";
 
 interface AlertaProps {

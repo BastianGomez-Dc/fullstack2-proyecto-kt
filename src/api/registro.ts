@@ -37,12 +37,22 @@ export function registrarUsuario(datos: DatosRegistro): Promise<UsuarioRegistrad
   return apiRequest<UsuarioRegistrado>("/auth/registro", { method: "POST", body: datos });
 }
 
-export async function confirmarRegistro(email: string, codigo: string): Promise<void> {
-  await apiRequest("/auth/registro/confirmar", { method: "POST", body: { email, codigo } });
+// Contratos explícitos de las peticiones. El servidor asigna el rol; el front no lo envía.
+export interface ConfirmarRegistroRequest {
+  email: string;
+  codigo: string;
 }
 
-export async function reenviarCodigo(email: string): Promise<void> {
-  await apiRequest("/auth/registro/reenviar-codigo", { method: "POST", body: { email } });
+export interface ReenviarCodigoRequest {
+  email: string;
+}
+
+export async function confirmarRegistro(request: ConfirmarRegistroRequest): Promise<void> {
+  await apiRequest("/auth/registro/confirmar", { method: "POST", body: request });
+}
+
+export async function reenviarCodigo(request: ReenviarCodigoRequest): Promise<void> {
+  await apiRequest("/auth/registro/reenviar-codigo", { method: "POST", body: request });
 }
 
 export function mensajeDeRegistro(error: unknown): string {

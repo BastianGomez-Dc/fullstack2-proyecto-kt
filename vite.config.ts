@@ -1,11 +1,12 @@
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
   // CloudFront sirve desde la raíz; GitHub Pages especifica --base en su workflow.
   base: '/',
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   // En desarrollo, /api va al backend SyncPass local: mismo origen, sin CORS
   server: {
     proxy: {

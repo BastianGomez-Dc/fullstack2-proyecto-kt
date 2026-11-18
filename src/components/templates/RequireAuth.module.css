@@ -1,0 +1,10 @@
+.pagina {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 4rem 1rem;
+}
+
+.estado {
+  color: var(--color-texto-suave);
+}

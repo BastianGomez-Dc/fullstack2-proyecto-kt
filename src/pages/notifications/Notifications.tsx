@@ -7,7 +7,7 @@ import {
   ROLES,
   type Rol,
 } from "../../api/notifications";
-import BotonEnvio from "../../components/form/BotonEnvio";
+import BotonEnvio from "../../components/molecules/BotonEnvio";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import styles from "./Notifications.module.css";
 

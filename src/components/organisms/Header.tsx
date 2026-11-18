@@ -1,8 +1,8 @@
 import { useEffect, useId, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "../../auth/AuthContext";
-import Icon from "../icon/Icon";
-import Logo from "../logo/Logo";
+import Icon from "../atoms/Icon";
+import Logo from "../atoms/Logo";
 import styles from "./Header.module.css";
 
 // Las secciones viven en el inicio; con BASE_URL funcionan también en GitHub Pages

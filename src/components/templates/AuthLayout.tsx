@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import Icon, { type NombreIcono } from "../icon/Icon";
-import PassCard from "../pass/PassCard";
+import Icon, { type NombreIcono } from "../atoms/Icon";
+import PassCard from "../molecules/PassCard";
 import styles from "./AuthLayout.module.css";
 
 const BENEFICIOS: Array<{ icono: NombreIcono; texto: string }> = [

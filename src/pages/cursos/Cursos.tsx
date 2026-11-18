@@ -11,7 +11,7 @@ import {
   type CursoCreateRequest,
 } from "../../api/cursos";
 import { useAuth } from "../../auth/AuthContext";
-import CursoForm from "../../components/cursos/CursoForm";
+import CursoForm from "../../components/organisms/CursoForm";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import styles from "./Cursos.module.css";
 

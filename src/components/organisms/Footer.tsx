@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import Logo from "../logo/Logo";
+import Logo from "../atoms/Logo";
 import styles from "./Footer.module.css";
 
 const INICIO = import.meta.env.BASE_URL;

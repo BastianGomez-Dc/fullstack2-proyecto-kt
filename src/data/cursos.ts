@@ -1,4 +1,4 @@
-import type { NombreIcono } from "../components/icon/Icon";
+import type { NombreIcono } from "../components/atoms/Icon";
 
 // Catálogo de ejemplo (los mismos datos que tenía la portada). Reemplazar por el catálogo real o por la API.
 export interface Curso {

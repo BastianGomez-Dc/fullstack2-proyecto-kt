@@ -3,11 +3,11 @@ import { Link, useLocation } from "wouter";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import { useAuth } from "../../auth/AuthContext";
 import { MENSAJE_CUENTA_NO_CONFIRMADA } from "../../auth/cognito";
-import AuthLayout from "../../components/auth-layout/AuthLayout";
-import Alerta from "../../components/form/Alerta";
-import BotonEnvio from "../../components/form/BotonEnvio";
-import Icon from "../../components/icon/Icon";
-import form from "../../components/form/Form.module.css";
+import AuthLayout from "../../components/templates/AuthLayout";
+import Alerta from "../../components/molecules/Alerta";
+import BotonEnvio from "../../components/molecules/BotonEnvio";
+import Icon from "../../components/atoms/Icon";
+import form from "../../components/molecules/Form.module.css";
 
 type Errores = { correo?: string; password?: string };
 

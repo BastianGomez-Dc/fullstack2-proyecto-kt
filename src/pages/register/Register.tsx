@@ -10,11 +10,11 @@ import {
   reenviarCodigo,
   registrarUsuario,
 } from "../../api/registro";
-import AuthLayout from "../../components/auth-layout/AuthLayout";
-import Alerta from "../../components/form/Alerta";
-import BotonEnvio from "../../components/form/BotonEnvio";
-import Icon, { type NombreIcono } from "../../components/icon/Icon";
-import form from "../../components/form/Form.module.css";
+import AuthLayout from "../../components/templates/AuthLayout";
+import Alerta from "../../components/molecules/Alerta";
+import BotonEnvio from "../../components/molecules/BotonEnvio";
+import Icon, { type NombreIcono } from "../../components/atoms/Icon";
+import form from "../../components/molecules/Form.module.css";
 import styles from "./Register.module.css";
 
 type NombreCampo = "nombre" | "correo" | "telefono" | "password" | "confirmar";
@@ -233,7 +233,7 @@ const Register = () => {
 
     setEnviando(true);
     try {
-      await confirmarRegistro(correoPendiente.trim(), codigoLimpio);
+      await confirmarRegistro({ email: correoPendiente.trim(), codigo: codigoLimpio });
       setEtapa("listo");
     } catch (error) {
       setErrorServidor(mensajeDeRegistro(error));
@@ -250,7 +250,7 @@ const Register = () => {
 
     setEnviando(true);
     try {
-      await reenviarCodigo(correoPendiente.trim());
+      await reenviarCodigo({ email: correoPendiente.trim() });
       setAviso(`Te enviamos un nuevo código a ${correoPendiente.trim()}.`);
     } catch (error) {
       setErrorServidor(mensajeDeRegistro(error));

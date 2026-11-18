@@ -1,0 +1,8 @@
+/* Tailwind v4, integración incremental.
+   Se importan solo theme + utilities: el reset (preflight) se omite a propósito
+   porque src/index.css ya define el reset y los tokens de diseño. Así los CSS
+   Modules y las utilidades conviven sin sobrescribirse: las utilidades viven en
+   capas y el CSS existente (sin capa) gana en caso de conflicto. */
+@layer theme, utilities;
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
