@@ -9,6 +9,11 @@
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
 
+/* Las clases se buscan solo en el código; la documentación (docs/, README) cita
+   ejemplos como `bg-[var(--color-...)]` que no deben generar CSS. */
+@source not "../docs";
+@source not "../README.md";
+
 /* Animación de entrada de los avisos (Alerta): `animate-aparecer`. Usa los tokens de movimiento. */
 @theme {
   --animate-aparecer: aparecer var(--duracion) var(--curva-salida);
