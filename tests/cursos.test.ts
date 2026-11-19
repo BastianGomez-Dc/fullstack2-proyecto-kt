@@ -6,6 +6,7 @@ import {
   desactivarCurso,
   editarCurso,
   listarCursos,
+  listarCursosRecientes,
   obtenerCurso,
 } from "../src/api/cursos";
 
@@ -44,6 +45,21 @@ describe("api/cursos", () => {
     expect(await listarCursos("jwt")).toEqual([CURSO]);
     expect(peticion?.url).toBe("/api/cursos");
     expect(autorizacion(peticion)).toBe("Bearer jwt");
+  });
+
+  it("listarCursosRecientes es público: pide los 3 últimos sin token", async () => {
+    let peticion: Peticion | undefined;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string, opciones: RequestInit) => {
+        peticion = { url, opciones };
+        return new Response(JSON.stringify([CURSO]), { status: 200 });
+      }),
+    );
+
+    expect(await listarCursosRecientes()).toEqual([CURSO]);
+    expect(peticion?.url).toBe("/api/cursos/recientes?limite=3");
+    expect(autorizacion(peticion)).toBeUndefined();
   });
 
   it("obtenerCurso consulta el detalle por id", async () => {

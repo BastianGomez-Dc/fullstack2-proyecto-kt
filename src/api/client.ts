@@ -24,12 +24,15 @@ export interface ApiRequestOptions {
   method?: string;
   body?: unknown;
   token?: string | null;
+  /** Permite cancelar la petición, por ejemplo si el componente se desmonta. */
+  signal?: AbortSignal;
 }
 
 export async function apiRequest<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
-  const { method = "GET", body, token } = options;
+  const { method = "GET", body, token, signal } = options;
   const response = await fetch(`${BASE_URL}${path}`, {
     method,
+    signal,
     headers: {
       ...(body ? { "Content-Type": "application/json" } : {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),

@@ -3,9 +3,9 @@ import { useAuth } from "../../auth/AuthContext";
 import Footer from "../../components/organisms/Footer";
 import Icon, { type NombreIcono } from "../../components/atoms/Icon";
 import PassCard from "../../components/molecules/PassCard";
-import { CURSOS } from "../../data/cursos";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import styles from "./Home.module.css";
+import UltimosCursos from "./UltimosCursos";
 
 const PUBLICOS: Array<{ titulo: string; texto: string; icono: NombreIcono; puntos: string[] }> = [
   {
@@ -140,36 +140,12 @@ const Home = () => {
         <section className={`${styles.seccion} ${styles.seccionSuave}`} id="cursos" aria-labelledby="tituloCatalogo">
           <div className="container">
             <div className={styles.encabezado}>
-              <p className={styles.antetitulo}>Nuestros cursos</p>
-              <h2 id="tituloCatalogo" className={styles.seccionTitulo}>Elige tu próximo curso</h2>
+              <p className={styles.antetitulo}>Nuevos cursos</p>
+              <h2 id="tituloCatalogo" className={styles.seccionTitulo}>Los últimos cursos publicados</h2>
               <p className={styles.seccionTexto}>Cada curso se acredita con código QR al momento de llegar.</p>
             </div>
 
-            <ul className={styles.cursos}>
-              {CURSOS.map((curso) => (
-                <li key={curso.nombre}>
-                  <article className={styles.curso}>
-                    <div className={styles.cursoPortada} data-tono={curso.tono} aria-hidden="true">
-                      <Icon nombre={curso.icono} tamano={40} grosor={1.6} />
-                    </div>
-                    <div className={styles.cursoCuerpo}>
-                      <span className={styles.cursoEtiqueta}>{curso.etiqueta}</span>
-                      <h3 className={styles.cursoNombre}>{curso.nombre}</h3>
-                      <p className={styles.cursoTexto}>{curso.descripcion}</p>
-                      <div className={styles.cursoPie}>
-                        <p className={styles.precio}>
-                          {curso.precio}
-                          {curso.unidad && <span> {curso.unidad}</span>}
-                        </p>
-                        <Link className={styles.botonInscribir} href="/register">
-                          Inscribirme<span className="sr-only"> en {curso.nombre}</span>
-                        </Link>
-                      </div>
-                    </div>
-                  </article>
-                </li>
-              ))}
-            </ul>
+            <UltimosCursos autenticado={isAuthenticated} />
           </div>
         </section>
 

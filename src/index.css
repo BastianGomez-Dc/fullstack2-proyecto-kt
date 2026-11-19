@@ -25,6 +25,9 @@
   --color-exito: #067647;
   --color-exito-fondo: #ecfdf3;
   --color-exito-borde: #abefc6;
+  --color-info: #175cd3;
+  --color-info-fondo: #eff8ff;
+  --color-info-borde: #b2ddff;
 
   /* Tipografía */
   --fuente: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -144,6 +147,11 @@ a {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Mientras se descarga el código de una página: ocupa el alto para que el pie no salte */
+.pagina-cargando {
+  flex: 1;
 }
 
 /* Enlace "Saltar al contenido": visible solo al navegar con teclado */

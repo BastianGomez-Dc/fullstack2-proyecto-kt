@@ -31,11 +31,12 @@ describe("App (render básico)", () => {
     expect(document.title).toBe("SyncPass");
   });
 
-  it("renderiza la vista 404 para una ruta desconocida", () => {
+  it("renderiza la vista 404 para una ruta desconocida", async () => {
     window.history.pushState({}, "", "/ruta-inexistente");
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: /no encontramos esta página/i })).toBeInTheDocument();
+    // Las páginas fuera de la portada se cargan de forma diferida (React.lazy)
+    expect(await screen.findByRole("heading", { name: /no encontramos esta página/i })).toBeInTheDocument();
     expect(document.title).toBe("Página no encontrada");
   });
 });

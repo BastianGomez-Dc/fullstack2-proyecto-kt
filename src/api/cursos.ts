@@ -31,6 +31,11 @@ export function listarCursos(token: string): Promise<Curso[]> {
   return apiRequest<Curso[]>("/cursos", { token });
 }
 
+/** Público (sin sesión): los últimos cursos activos creados, del más nuevo al más antiguo. */
+export function listarCursosRecientes(limite = 3, signal?: AbortSignal): Promise<Curso[]> {
+  return apiRequest<Curso[]>(`/cursos/recientes?limite=${limite}`, { signal });
+}
+
 export function obtenerCurso(id: number, token: string): Promise<Curso> {
   return apiRequest<Curso>(`/cursos/${id}`, { token });
 }

@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import type { ComponentProps } from "react";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import CursoForm from "../src/components/organisms/CursoForm";
 
 const curso = {
@@ -14,26 +15,66 @@ const curso = {
   estado: "EN_CURSO" as const,
 };
 
+type Props = ComponentProps<typeof CursoForm>;
+
+const renderForm = (props: Partial<Props> = {}) =>
+  render(
+    <CursoForm
+      curso={null}
+      guardando={false}
+      errorServidor={null}
+      sugerencias={{ areas: ["Educación"], unidades: ["UV 01"] }}
+      onGuardar={vi.fn()}
+      onCancelar={vi.fn()}
+      {...props}
+    />,
+  );
+
+// jsdom no implementa estas APIs; el formulario las usa al abrirse y en el diálogo de descarte
+beforeAll(() => {
+  Element.prototype.scrollIntoView = vi.fn();
+  HTMLDialogElement.prototype.showModal = vi.fn(function (this: HTMLDialogElement) {
+    this.setAttribute("open", "");
+  });
+  HTMLDialogElement.prototype.close = vi.fn(function (this: HTMLDialogElement) {
+    this.removeAttribute("open");
+  });
+});
+
+beforeEach(() => {
+  vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: true })));
+});
+
 describe("CursoForm", () => {
   it("valida los campos obligatorios y no llama a onGuardar", async () => {
     const user = userEvent.setup();
     const onGuardar = vi.fn();
-    render(<CursoForm curso={null} guardando={false} onGuardar={onGuardar} onCancelar={vi.fn()} />);
+    renderForm({ onGuardar });
 
     await user.click(screen.getByRole("button", { name: /crear curso/i }));
 
-    expect(await screen.findByText("El título es obligatorio.")).toBeInTheDocument();
-    expect(screen.getByText("El área temática es obligatoria.")).toBeInTheDocument();
-    expect(screen.getByText("La unidad vecinal es obligatoria.")).toBeInTheDocument();
-    expect(screen.getByText("La fecha de inicio es obligatoria.")).toBeInTheDocument();
-    expect(screen.getByText("La fecha de término es obligatoria.")).toBeInTheDocument();
+    expect(await screen.findByRole("alert")).toHaveTextContent(/revisa 5 campos antes de guardar/i);
+    expect(screen.getByText("Escribe el título del curso.")).toBeInTheDocument();
+    expect(screen.getByText("Indica el área temática, por ejemplo «Educación».")).toBeInTheDocument();
+    expect(screen.getByText("Indica la unidad vecinal donde se realiza el curso.")).toBeInTheDocument();
+    expect(screen.getByText("Elige una fecha de inicio válida.")).toBeInTheDocument();
+    expect(screen.getByText("Elige una fecha de término válida.")).toBeInTheDocument();
     expect(onGuardar).not.toHaveBeenCalled();
+  });
+
+  it("rechaza una fecha de término anterior a la de inicio", async () => {
+    renderForm();
+
+    fireEvent.change(screen.getByLabelText(/fecha de inicio/i), { target: { value: "2026-06-30" } });
+    fireEvent.change(screen.getByLabelText(/fecha de término/i), { target: { value: "2026-02-01" } });
+
+    expect(await screen.findByText(/no puede ser anterior al inicio \(30 de junio de 2026\)/)).toBeInTheDocument();
   });
 
   it("envía los datos normalizados cuando el formulario es válido", async () => {
     const user = userEvent.setup();
     const onGuardar = vi.fn().mockResolvedValue(undefined);
-    render(<CursoForm curso={null} guardando={false} onGuardar={onGuardar} onCancelar={vi.fn()} />);
+    renderForm({ onGuardar });
 
     await user.type(screen.getByLabelText(/título/i), "  Curso de prueba  ");
     await user.type(screen.getByLabelText(/área temática/i), "  Educación  ");
@@ -56,24 +97,37 @@ describe("CursoForm", () => {
     });
   });
 
-  it("notifica la cancelación", async () => {
+  it("notifica la cancelación si no hay cambios", async () => {
     const user = userEvent.setup();
     const onCancelar = vi.fn();
-    render(<CursoForm curso={null} guardando={false} onGuardar={vi.fn()} onCancelar={onCancelar} />);
+    renderForm({ onCancelar });
 
     await user.click(screen.getByRole("button", { name: /cancelar/i }));
     expect(onCancelar).toHaveBeenCalledTimes(1);
   });
 
+  it("pide confirmación antes de descartar lo escrito", async () => {
+    const user = userEvent.setup();
+    const onCancelar = vi.fn();
+    renderForm({ onCancelar });
+
+    await user.type(screen.getByLabelText(/título/i), "Borrador");
+    await user.click(screen.getByRole("button", { name: /cancelar/i }));
+    expect(onCancelar).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: /descartar/i }));
+    expect(onCancelar).toHaveBeenCalledTimes(1);
+  });
+
   it("deshabilita el formulario mientras guarda", () => {
-    render(<CursoForm curso={null} guardando onGuardar={vi.fn()} onCancelar={vi.fn()} />);
+    renderForm({ guardando: true });
 
     expect(screen.getByRole("button", { name: /guardando/i })).toBeDisabled();
     expect(screen.getByLabelText(/título/i)).toBeDisabled();
   });
 
   it("precarga los datos al editar un curso", () => {
-    render(<CursoForm curso={curso} guardando={false} onGuardar={vi.fn()} onCancelar={vi.fn()} />);
+    renderForm({ curso });
 
     expect(screen.getByRole("heading", { name: /editar curso/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/título/i)).toHaveValue(curso.titulo);
