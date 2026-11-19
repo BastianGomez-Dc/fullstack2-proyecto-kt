@@ -56,10 +56,11 @@ flowchart LR
     SPA --> B[Backend REST SyncPass\n repo monolito_backend_syncpass]
     B --> D[(Base de datos\n Supabase*)]
     B --> C
-    O[Despliegue web\n GitHub Pages / EC2 / CloudFront*] -.sirve assets.- SPA
+    O[Vercel\n hosting estático + rewrite /api*] -.sirve assets.- SPA
+    O -. reenvía /api .-> B
 ```
 
-\* El despliegue y Supabase se mencionan en `docs/06`/`docs/07` y en los scripts de `scripts/`, pero **no se verifican desde este repositorio**. No se declara una URL productiva: `vite.config.ts` usa `base: '/'` y el workflow de Pages compila con `--base=/fullstack2-proyecto-kt/`.
+\* Supabase se menciona en `docs/06`/`docs/07` y en los scripts de `scripts/`, pero **no se verifica desde este repositorio**. La web se publica en **Vercel** (`vercel.json`, `base: '/'`): Vercel sirve `dist/` y reenvía `/api/*` a `https://syncpass.duckdns.org/api/*` (backend en EC2), así el navegador ve un solo origen, igual que con el proxy de Vite en desarrollo. El workflow de GitHub Pages (`--base=/fullstack2-proyecto-kt/`) queda como alternativa, pero ahí `/api` no llega al backend.
 
 **Interacciones C1**
 - El usuario abre la SPA en el navegador; la SPA es estática (Vite build en `dist/`).

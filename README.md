@@ -94,4 +94,6 @@ Los tests de API usan `fetch` simulado y los de componentes jsdom con mocks cont
 
 ## Deploy
 
-Cada push a `main` ejecuta el workflow `.github/workflows/deploy.yml`: instala dependencias, corre `npm run test:coverage`, publica el artifact `coverage-report`, compila con `npm run build -- --base=/fullstack2-proyecto-kt/`, agrega `404.html` como fallback SPA y despliega a GitHub Pages. Requiere **Settings > Pages > Source: GitHub Actions** una sola vez. Detalle y errores comunes en [`docs/05-github-pages.md`](./docs/05-github-pages.md).
+**Vercel (producción):** el proyecto de Vercel importa este repo de GitHub y publica cada push a `main` (las demás ramas generan *previews*). `vercel.json` compila con `npm run build`, sirve `dist/` y define dos *rewrites*: `/api/*` → `https://syncpass.duckdns.org/api/*` (backend Spring Boot en EC2), para que la SPA y la API compartan origen igual que con el proxy de Vite en desarrollo (sin CORS ni `VITE_API_BASE_URL`), y el resto de rutas → `index.html` (fallback del SPA para Wouter). Si el backend cambia de dominio, se actualiza ese *rewrite*.
+
+**GitHub Pages (alternativa):** cada push a `main` ejecuta el workflow `.github/workflows/deploy.yml`: instala dependencias, corre `npm run test:coverage`, publica el artifact `coverage-report`, compila con `npm run build -- --base=/fullstack2-proyecto-kt/`, agrega `404.html` como fallback SPA y despliega a GitHub Pages. Requiere **Settings > Pages > Source: GitHub Actions** una sola vez. Detalle y errores comunes en [`docs/05-github-pages.md`](./docs/05-github-pages.md).
