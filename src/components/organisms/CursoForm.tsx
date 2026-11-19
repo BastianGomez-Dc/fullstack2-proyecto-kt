@@ -19,7 +19,7 @@ import {
   validarCurso,
   type CampoCurso,
   type ValoresCurso,
-} from "./curso";
+} from "../../utils/curso";
 import styles from "./CursoForm.module.css";
 
 export interface SugerenciasCurso {

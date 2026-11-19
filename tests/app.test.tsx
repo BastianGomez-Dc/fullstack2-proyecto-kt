@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({ useAuth: vi.fn() }));
 
-vi.mock("../src/auth/AuthContext", () => ({ useAuth: mocks.useAuth }));
+vi.mock("../src/contexts/AuthContext", () => ({ useAuth: mocks.useAuth }));
 
 import App from "../src/App";
 

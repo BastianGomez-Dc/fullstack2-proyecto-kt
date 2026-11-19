@@ -10,7 +10,7 @@ import {
   type CursoCreateRequest,
   type EstadoCurso,
 } from "../../api/cursos";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import botones from "../../components/organisms/Botones.module.css";
 import {
   ETIQUETAS_ESTADO,
@@ -19,10 +19,10 @@ import {
   formatearFecha,
   ordenarCursos,
   valoresUnicos,
-} from "../../components/organisms/curso";
+} from "../../utils/curso";
 import Dialogo from "../../components/molecules/Dialogo";
 import Icon from "../../components/atoms/Icon";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import styles from "./Cursos.module.css";
 
 // Solo los administradores usan el formulario: se descarga aparte, y se precarga al pasar el

@@ -7,7 +7,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("wouter", () => ({ useLocation: () => ["/cursos", mocks.navigate] }));
-vi.mock("../src/auth/AuthContext", () => ({ useAuth: mocks.useAuth }));
+vi.mock("../src/contexts/AuthContext", () => ({ useAuth: mocks.useAuth }));
 
 import RequireAuth from "../src/components/templates/RequireAuth";
 

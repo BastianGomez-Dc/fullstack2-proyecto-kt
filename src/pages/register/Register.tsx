@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import type { InputHTMLAttributes, ReactNode, SubmitEvent } from "react";
 import { Link, useSearch } from "wouter";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import {
   confirmarRegistro,
-  esTelefonoValido,
   mensajeDeRegistro,
-  normalizarTelefono,
   reenviarCodigo,
   registrarUsuario,
 } from "../../api/registro";
+import { esTelefonoValido, normalizarTelefono } from "../../utils/telefono";
 import AuthLayout from "../../components/templates/AuthLayout";
 import Alerta from "../../components/molecules/Alerta";
 import BotonEnvio from "../../components/molecules/BotonEnvio";

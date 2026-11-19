@@ -1,6 +1,6 @@
-import type { Curso, EstadoCurso } from "../../api/cursos.ts";
+import type { Curso, EstadoCurso } from "../api/cursos.ts";
 
-// Lógica pura del mantenedor de cursos (sin React), para poder probarla con node --test.
+// Lógica pura del mantenedor de cursos (sin React ni HTTP), para poder probarla en entorno node.
 
 export const ETIQUETAS_ESTADO: Record<EstadoCurso, string> = {
   PLANIFICADO: "Planificado",

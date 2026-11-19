@@ -13,7 +13,7 @@ import {
   iniciarSesionCognito,
   obtenerSesion,
   type Usuario,
-} from "./cognito";
+} from "../auth/cognito";
 
 export interface AuthContextValue {
   token: string | null;

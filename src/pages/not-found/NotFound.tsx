@@ -1,9 +1,10 @@
 import { Link } from "wouter";
 import Icon from "../../components/atoms/Icon";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
-// Única vista migrada a Tailwind (integración incremental). Los colores/radios
-// se toman de los tokens de index.css; el resto de la app sigue con CSS Modules.
+// Primera vista migrada a Tailwind (integración incremental; luego se sumaron Logo, Alerta,
+// Card, Footer, RequireAuth y el historial de notificaciones). Los colores y radios se toman de
+// los tokens de index.css; el resto de la app sigue con CSS Modules.
 const NotFound = () => {
   useDocumentTitle("Página no encontrada");
   return (

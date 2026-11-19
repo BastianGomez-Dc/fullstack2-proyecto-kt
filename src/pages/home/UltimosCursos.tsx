@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { listarCursosRecientes, type Curso } from "../../api/cursos";
-import { ETIQUETAS_ESTADO, describirDuracion, duracionEnDias, formatearFecha } from "../../components/organisms/curso";
+import { ETIQUETAS_ESTADO, describirDuracion, duracionEnDias, formatearFecha } from "../../utils/curso";
 import Icon, { type NombreIcono } from "../../components/atoms/Icon";
 import styles from "./Home.module.css";
 

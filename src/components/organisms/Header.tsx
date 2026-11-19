@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import Icon from "../atoms/Icon";
 import Logo from "../atoms/Logo";
 import styles from "./Header.module.css";

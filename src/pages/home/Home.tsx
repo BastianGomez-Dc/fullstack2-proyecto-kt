@@ -1,9 +1,9 @@
 import { Link } from "wouter";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import Footer from "../../components/organisms/Footer";
 import Icon, { type NombreIcono } from "../../components/atoms/Icon";
 import PassCard from "../../components/molecules/PassCard";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import styles from "./Home.module.css";
 import UltimosCursos from "./UltimosCursos";
 

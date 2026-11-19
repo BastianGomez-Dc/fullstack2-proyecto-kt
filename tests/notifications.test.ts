@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "../src/api/client";
-import { enviarNotificacionManual, getHistorial } from "../src/api/notifications";
+import { enviarNotificacionManual, getHistorial, type HistorialResponse } from "../src/api/notifications";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -89,5 +89,56 @@ describe("api/notifications", () => {
     expect(await getHistorial("jwt-de-prueba")).toEqual([]);
     expect(peticion?.url).toBe("/api/notifications/historial");
     expect(autorizacion(peticion)).toBe("Bearer jwt-de-prueba");
+  });
+
+  it("getHistorial devuelve los registros tipados según el HistorialItem del backend", async () => {
+    const historial: HistorialResponse = [
+      {
+        id: 1,
+        titulo: "Recordatorio",
+        cuerpo: "El curso empieza el lunes",
+        roles: ["VOLUNTARIO"],
+        enviadoEn: "2026-11-13T22:00:00",
+        dispositivosEnviados: 12,
+      },
+      { id: 2, titulo: "Aviso", cuerpo: "Para todos", roles: null, enviadoEn: "2026-11-14T08:30:00", dispositivosEnviados: 0 },
+    ];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        new Response(JSON.stringify(historial), { status: 200, headers: { "Content-Type": "application/json" } }),
+      ),
+    );
+
+    const respuesta = await getHistorial("jwt");
+    expect(respuesta).toEqual(historial);
+    expect(respuesta[0].dispositivosEnviados).toBe(12);
+  });
+
+  it("getHistorial rechaza con 502 un historial que no cumple el contrato", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        new Response(JSON.stringify([{ id: "1", titulo: "Sin campos" }]), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      ),
+    );
+
+    const promesa = getHistorial("jwt");
+    await expect(promesa).rejects.toBeInstanceOf(ApiError);
+    await expect(promesa).rejects.toMatchObject({ status: 502 });
+  });
+
+  it("enviarNotificacionManual rechaza con 502 una respuesta sin mensaje", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response("{}", { status: 200, headers: { "Content-Type": "application/json" } })),
+    );
+
+    await expect(
+      enviarNotificacionManual({ titulo: "Aviso", cuerpo: "Mensaje", roles: [] }, "jwt"),
+    ).rejects.toMatchObject({ status: 502 });
   });
 });

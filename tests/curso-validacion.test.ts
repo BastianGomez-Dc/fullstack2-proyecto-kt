@@ -8,7 +8,7 @@ import {
   ordenarCursos,
   validarCurso,
   valoresUnicos,
-} from "../src/components/organisms/curso";
+} from "../src/utils/curso";
 
 const VALIDO = {
   titulo: "Alfabetización Digital",

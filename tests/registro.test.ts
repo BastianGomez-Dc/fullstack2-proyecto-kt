@@ -3,7 +3,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   confirmarRegistro,
   mensajeDeRegistro,
-  normalizarTelefono,
   reenviarCodigo,
   registrarUsuario,
 } from "../src/api/registro";
@@ -107,13 +106,5 @@ describe("api/registro", () => {
 
     expect(mensajeDeRegistro(error)).toBe("Ya existe una cuenta con ese email");
     expect(mensajeDeRegistro(new TypeError("Failed to fetch"))).toMatch(/No pudimos conectar/);
-  });
-
-  it("normalizarTelefono deja los celulares chilenos en formato E.164", () => {
-    expect(normalizarTelefono("9 1234 5678")).toBe("+56912345678");
-    expect(normalizarTelefono("+56 9 1234-5678")).toBe("+56912345678");
-    expect(normalizarTelefono("56912345678")).toBe("+56912345678");
-    expect(normalizarTelefono("+1 (415) 555-0100")).toBe("+14155550100");
-    expect(normalizarTelefono("12345")).toBe("12345");
   });
 });

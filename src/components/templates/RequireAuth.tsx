@@ -1,7 +1,10 @@
 import { useEffect, type ReactNode } from "react";
 import { useLocation } from "wouter";
-import { useAuth } from "../../auth/AuthContext";
-import styles from "./RequireAuth.module.css";
+import { useAuth } from "../../contexts/AuthContext";
+
+// Estilos con utilidades de Tailwind: ocupa el alto disponible y centra el mensaje de estado
+const PAGINA = "flex-1 grid place-items-center py-16 px-4";
+const ESTADO = "text-[var(--color-texto-suave)]";
 
 interface RequireAuthProps {
   children: ReactNode;
@@ -29,16 +32,16 @@ const RequireAuth = ({ children, roles }: RequireAuthProps) => {
 
   if (!isReady) {
     return (
-      <main id="contenido" className={styles.pagina}>
-        <p className={styles.estado} role="status">Verificando la sesión…</p>
+      <main id="contenido" className={PAGINA}>
+        <p className={ESTADO} role="status">Verificando la sesión…</p>
       </main>
     );
   }
 
   if (redirigir) {
     return (
-      <main id="contenido" className={styles.pagina}>
-        <p className={styles.estado} role="status">Redirigiendo al inicio de sesión…</p>
+      <main id="contenido" className={PAGINA}>
+        <p className={ESTADO} role="status">Redirigiendo al inicio de sesión…</p>
       </main>
     );
   }

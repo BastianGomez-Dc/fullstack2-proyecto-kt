@@ -1,8 +1,22 @@
 /* Tailwind v4, integración incremental.
    Se importan solo theme + utilities: el reset (preflight) se omite a propósito
-   porque src/index.css ya define el reset y los tokens de diseño. Así los CSS
-   Modules y las utilidades conviven sin sobrescribirse: las utilidades viven en
-   capas y el CSS existente (sin capa) gana en caso de conflicto. */
-@layer theme, utilities;
+   porque src/index.css ya define el reset y los tokens de diseño. Ese reset de
+   elementos vive en la capa `base`, por debajo de `utilities`, así que una utilidad
+   puede ajustar un <p> o un <h2>. Los CSS Modules y los tokens no están en capa:
+   ganan cualquier conflicto, por eso al migrar un componente a utilidades se borra
+   su regla del CSS Module. */
+@layer theme, base, utilities;
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
+
+/* Animación de entrada de los avisos (Alerta): `animate-aparecer`. Usa los tokens de movimiento. */
+@theme {
+  --animate-aparecer: aparecer var(--duracion) var(--curva-salida);
+
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+}

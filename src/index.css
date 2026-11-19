@@ -1,4 +1,11 @@
 /* Estilos globales: tokens de diseño, reset y utilidades. Los componentes usan solo estos tokens. */
+
+/* Orden de capas (el mismo que declara tailwind.css): el reset de elementos vive en `base`,
+   por debajo de las utilidades de Tailwind, igual que el preflight que se omitió. Así una clase
+   como `mt-4` o `text-white` puede ajustar un <p> o un <h2>. Lo que queda fuera de capas
+   (tokens, .container, .sr-only y los CSS Modules) sigue ganando cualquier conflicto. */
+@layer theme, base, utilities;
+
 :root {
   /* Marca */
   --color-primario: #1f574c;
@@ -85,42 +92,44 @@ body {
   min-height: 100dvh;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  margin: 0;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  color: var(--color-primario-fuerte);
-  text-wrap: balance;
-}
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-primario-fuerte);
+    text-wrap: balance;
+  }
 
-p {
-  margin: 0;
-}
+  p {
+    margin: 0;
+  }
 
-button,
-input,
-select,
-textarea {
-  font: inherit;
-  color: inherit;
-}
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
 
-button,
-a {
-  touch-action: manipulation;
-}
+  button,
+  a {
+    touch-action: manipulation;
+  }
 
-:focus-visible {
-  outline: 3px solid var(--color-primario);
-  outline-offset: 2px;
-}
+  :focus-visible {
+    outline: 3px solid var(--color-primario);
+    outline-offset: 2px;
+  }
 
-/* Títulos que reciben el foco por código al cambiar de paso: no muestran anillo */
-[tabindex="-1"]:focus {
-  outline: none;
+  /* Títulos que reciben el foco por código al cambiar de paso: no muestran anillo */
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
 }
 
 .container {

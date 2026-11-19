@@ -1,7 +1,7 @@
 import { useRef, useState, type SubmitEvent } from "react";
 import { Link, useLocation } from "wouter";
-import useDocumentTitle from "../hooks/useDocumentTitle";
-import { useAuth } from "../../auth/AuthContext";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
+import { useAuth } from "../../contexts/AuthContext";
 import { MENSAJE_CUENTA_NO_CONFIRMADA } from "../../auth/cognito";
 import AuthLayout from "../../components/templates/AuthLayout";
 import Alerta from "../../components/molecules/Alerta";

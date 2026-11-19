@@ -1,14 +1,20 @@
 import { useEffect, useState, type SubmitEvent } from "react";
 import { Link } from "wouter";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import {
   enviarNotificacionManual,
   getHistorial,
   ROLES,
+  type HistorialResponse,
   type Rol,
 } from "../../api/notifications";
 import BotonEnvio from "../../components/molecules/BotonEnvio";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
+import {
+  describirDestinatarios,
+  describirDispositivos,
+  formatearFechaHora,
+} from "../../utils/notificaciones";
 import styles from "./Notifications.module.css";
 
 const Notifications = () => {
@@ -20,7 +26,7 @@ const Notifications = () => {
   const [error, setError] = useState<string | null>(null);
   const [errorValidacion, setErrorValidacion] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
-  const [historial, setHistorial] = useState<unknown[] | null>(null);
+  const [historial, setHistorial] = useState<HistorialResponse | null>(null);
   const [errorHistorial, setErrorHistorial] = useState<string | null>(null);
 
   useDocumentTitle("Notificaciones");
@@ -196,9 +202,23 @@ const Notifications = () => {
             ) : historial.length === 0 ? (
               <p className={styles.estado}>Aún no hay notificaciones en el historial.</p>
             ) : (
-              <p className={styles.estado}>
-                Hay {historial.length} registros. La presentación del historial está pendiente de definir.
-              </p>
+              // Lista con utilidades de Tailwind; los colores y radios salen de los tokens de index.css
+              <ul className="grid gap-3 m-0 p-0 list-none" aria-label="Notificaciones enviadas">
+                {historial.map((item) => (
+                  <li
+                    key={item.id}
+                    className="p-4 bg-[var(--color-superficie)] border border-[color:var(--color-borde)] rounded-[var(--radio-md)]"
+                  >
+                    <h3 className="text-base font-bold">{item.titulo}</h3>
+                    <p className="mt-1 text-[0.9rem] leading-normal text-[var(--color-texto)]">{item.cuerpo}</p>
+                    <p className="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-[0.8125rem] text-[var(--color-texto-suave)]">
+                      <time dateTime={item.enviadoEn}>{formatearFechaHora(item.enviadoEn)}</time>
+                      <span>Para: {describirDestinatarios(item.roles)}</span>
+                      <span>{describirDispositivos(item.dispositivosEnviados)}</span>
+                    </p>
+                  </li>
+                ))}
+              </ul>
             )}
           </section>
         </div>

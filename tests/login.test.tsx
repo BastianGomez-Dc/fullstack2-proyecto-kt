@@ -15,7 +15,7 @@ vi.mock("wouter", () => ({
   useLocation: () => ["/login", mocks.navigate],
 }));
 
-vi.mock("../src/auth/AuthContext", () => ({ useAuth: mocks.useAuth }));
+vi.mock("../src/contexts/AuthContext", () => ({ useAuth: mocks.useAuth }));
 
 import { MENSAJE_CUENTA_NO_CONFIRMADA } from "../src/auth/cognito";
 import Login from "../src/pages/login/Login";
