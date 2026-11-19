@@ -1,6 +1,8 @@
 # Estado de avance frente a la rúbrica EVA3
 
 > **Corte:** 2026-11-13
+>
+> ⚠️ **Documento histórico.** Los estados «Pendiente / No verificado» de abajo corresponden a ese corte. Estado vigente (19-11-2026): `ARQUITECTURA.md`, `ALCANCE.md` y `MOCKUPS.md` están completos y la web tiene **84 pruebas con 65,4 % de cobertura de líneas**. La app Android y la nube se verifican en sus propios repositorios.
 > **Base:** [08-desarrollo-ev3.md](./08-desarrollo-ev3.md)
 > **Alcance de esta revisión:** repositorio web `fullstack2-proyecto-kt`. Los componentes Android, backend, AWS y Supabase que estén en otros repositorios o cuentas no se consideran verificados por esta revisión.
 

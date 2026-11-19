@@ -1,5 +1,7 @@
 # 05 — Deploy en GitHub Pages
 
+> ⚠️ **Documento histórico (corte 13-11-2026).** El repo y el `base` cambiaron: el workflow actual (`.github/workflows/deploy.yml`) compila con `--base=/fullstack2-proyecto-kt/` y publica el artifact `coverage-report`; además existe `vercel.json` para el despliegue en Vercel. No uses los valores `fs2-react-app` de esta guía. Estado vigente: [ARQUITECTURA.md](./ARQUITECTURA.md).
+
 Despliegue de este repo (`docentedev/fs2-react-app`, rama `main`) a `https://docentedev.github.io/fs2-react-app/`.
 
 ## 5.1. Piezas necesarias (ya configuradas)

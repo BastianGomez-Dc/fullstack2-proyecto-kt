@@ -33,7 +33,7 @@ Desactivar un curso lo marca como `FINALIZADO`; el endpoint de listado ya excluy
 ## Verificación
 
 ```bash
-npm test       # 20 pruebas aprobadas
+npm test       # 84 pruebas aprobadas en el corte vigente (20 en el corte original de esta guía)
 npm run build  # TypeScript y build de producción correctos
 npm run lint   # sin errores
 ```

@@ -42,7 +42,7 @@ No se modificaron el backend ni el archivo de contexto pegado por el usuario. En
 Verificación realizada desde la raíz del proyecto:
 
 ```bash
-npm test       # 14 pruebas aprobadas
+npm test       # 84 pruebas aprobadas en el corte vigente (14 en el corte original de esta guía)
 npm run build  # TypeScript y build de producción correctos
 npm run lint   # sin errores
 ```

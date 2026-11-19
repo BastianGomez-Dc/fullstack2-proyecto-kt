@@ -14,7 +14,7 @@ Guías y documentación del proyecto con Vite + React + TypeScript.
 8. [Rúbrica EVA3](./08-desarrollo-ev3.md) — requisitos y ponderaciones.
 9. [Panel de notificaciones push](./09-panel-notificaciones.md) — integración web del envío manual y del historial tipado.
 10. [Mantenedor de cursos](./10-mantenedor-cursos.md) — catálogo y operaciones administrativas.
-11. [Estado de avance EVA3](./11-estado-ev3.md) — requisitos comprobables en este repo, pendientes y evidencia.
+11. [Estado de avance EVA3](./11-estado-ev3.md) — **documento histórico (corte 13-11-2026)**; el estado vigente está en [ARQUITECTURA](./ARQUITECTURA.md), [ALCANCE](./ALCANCE.md) y [MOCKUPS](./MOCKUPS.md).
 12. **[ARQUITECTURA](./ARQUITECTURA.md)** — capas (pages, components, hooks, contexts, api, utils), tipos Request/Response, C1/C2/C3 reales, Tailwind y flujos.
 13. **[ALCANCE](./ALCANCE.md)** — RF/RNF, casos de uso, flujos, reglas de rol e implementado/parcial/backlog.
 14. **[MOCKUPS](./MOCKUPS.md)** — wireframes de todas las vistas y estados + trazabilidad a archivos y tests.

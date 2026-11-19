@@ -1,5 +1,7 @@
 # 04 — Wouter: instalación y configuración
 
+> ⚠️ **Documento histórico (corte 13-11-2026).** El `App.tsx` actual usa `Header`, `RequireAuth`, rutas diferidas (`React.lazy`) y `NotFound`, con `base` derivado de `import.meta.env.BASE_URL` (`/fullstack2-proyecto-kt/` en CI). El ejemplo de abajo describe la configuración inicial. Estado vigente: [ARQUITECTURA.md](./ARQUITECTURA.md).
+
 Wouter es el router usado en este proyecto (~2 KB, API tipo `Route`/`Switch`/`Link`).
 
 ## 4.1. Instalación
