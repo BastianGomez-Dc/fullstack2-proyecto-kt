@@ -1,6 +1,6 @@
 # fs2-react-app (SyncPass)
 
-Front web del proyecto **SyncPass**: **Vite + React 19 + TypeScript + Wouter**, autenticación con **AWS Amplify/Cognito**, estilos con **CSS Modules** y tokens, e integración incremental de **Tailwind**. El deploy a GitHub Pages se hace con `.github/workflows/deploy.yml`.
+Front web del proyecto **SyncPass**: **Vite + React 19 + TypeScript + Wouter**, autenticación con **AWS Amplify/Cognito**, estilos con **CSS Modules** y tokens, y **Tailwind v4** en componentes seleccionados. El deploy a GitHub Pages se hace con `.github/workflows/deploy.yml`.
 
 - Rutas: `/` (Home) · `/login` · `/register` (y `/register?confirmar=1`) · `/cursos`* · `/notifications`* · cualquier otra (404). Las rutas marcadas con `*` pasan por `RequireAuth`.
 - La URL publicada y el estado real del backend/API Gateway **no se verifican desde este repositorio**; ver [docs/ARQUITECTURA.md](./docs/ARQUITECTURA.md).
@@ -35,18 +35,20 @@ En desarrollo, `vite.config.ts` redirige `/api` a `http://localhost:8080` (backe
 src/
   main.tsx              # <AuthProvider> + <App />
   App.tsx               # <Router base=BASE_URL> + Header + Switch de rutas + RequireAuth
-  index.css / tailwind.css
-  api/                  # client.ts, registro.ts, cursos.ts, notifications.ts (equivale a "clients")
-  auth/                 # AuthContext.tsx (useAuth) y cognito.ts (Amplify SRP)
-  data/                 # cursos.ts: catálogo estático de ejemplo
+  index.css             # tokens, reset de elementos (@layer base) y utilidades globales
+  tailwind.css          # Tailwind v4: solo theme + utilities (sin preflight)
+  api/                  # clients HTTP tipados: client.ts, registro.ts, cursos.ts, notifications.ts
+  auth/                 # cognito.ts (Amplify SRP)
+  contexts/             # AuthContext.tsx (AuthProvider + useAuth)
+  hooks/                # useDocumentTitle.ts
+  utils/                # funciones puras: curso.ts, telefono.ts, notificaciones.ts
   components/
-    atoms/              # Icon, Logo, Button*, Input*
-    molecules/          # Alerta, BotonEnvio, Card*, PassCard, Form.module.css
-    organisms/          # Header, Footer, CursoForm, Menu*
-    templates/          # AuthLayout, RequireAuth
+    atoms/              # Icon, Logo†, Button*, Input*
+    molecules/          # Alerta†, BotonEnvio, Card*†, Dialogo, PassCard, Form.module.css
+    organisms/          # Header, Footer†, CursoForm, Menu*
+    templates/          # AuthLayout, RequireAuth†
   pages/
-    home/ login/ register/ cursos/ notifications/ not-found/
-    hooks/useDocumentTitle.ts
+    home/ (Home + UltimosCursos)  login/  register/  cursos/  notifications/  not-found/
 tests/                  # suites .test.ts/.test.tsx (Vitest + React Testing Library)
   setup.ts              # jest-dom + cleanup
 coverage/               # reporte generado (text/json-summary/lcov), ignorado por git
@@ -54,7 +56,7 @@ public/                 # favicon, icons, .nojekyll
 .github/workflows/      # deploy a Pages + tests/cobertura
 docs/                   # documentación y decisiones
 ```
-`*` Componentes de ejemplo de la guía 03; están clasificados pero no se usan en las páginas. Cada componente mantiene su CSS Module junto al `.tsx`. La clasificación por niveles (Atomic Design) es incremental: **no cambió markup, estilos ni comportamiento**. Tailwind se usa solo en `pages/not-found/NotFound.tsx`; el resto sigue con CSS Modules y tokens.
+`*` Componentes de ejemplo de la guía 03; están clasificados pero no se usan en las páginas. `†` Componentes con utilidades de Tailwind (sin CSS Module); Tailwind también se usa en `pages/not-found/NotFound.tsx` y en la lista del historial de `Notifications`. El resto mantiene su CSS Module junto al `.tsx` y usa los mismos tokens de `index.css`. Capas y convenciones en [docs/ARQUITECTURA.md](./docs/ARQUITECTURA.md).
 
 ## Documentación
 
@@ -84,8 +86,8 @@ Registro, confirmación y reenvío **sí pasan por el backend** (`POST /api/auth
 ## Tests y cobertura
 
 ```bash
-npm test               # 44 pruebas: 21 API/auth + 23 RTL (componentes, guard, App/404)
-npm run test:coverage  # V8: 44,56% líneas / 43,78% sentencias, umbral 30% superado
+npm test               # 84 pruebas: 39 unitarias (API/auth/utils) + 45 RTL (componentes, páginas, guard, App/404)
+npm run test:coverage  # V8: 65,44% líneas / 64,54% sentencias, umbral 30% superado
 ```
 
 Los tests de API usan `fetch` simulado y los de componentes jsdom con mocks controlados: **no hay red ni Cognito real**. El reporte queda en `coverage/` (`lcov-report/index.html`, `coverage-summary.json`, `lcov.info`).

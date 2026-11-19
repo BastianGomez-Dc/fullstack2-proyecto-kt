@@ -11,10 +11,25 @@ La aplicación web permite a usuarios con rol `ADMINISTRADOR` enviar notificacio
 - [x] Se añadió la ruta `/notifications` con formulario de título, cuerpo y selección de roles.
 - [x] Si no se seleccionan roles, se envía `roles: []`, que el contrato del backend interpreta como envío a todos los usuarios activos.
 - [x] Se añadieron estados de envío, validación de campos vacíos, feedback de éxito y presentación de errores del API.
-- [x] El panel consulta el endpoint de historial y muestra el estado vacío o la cantidad de registros. No presupone un formato para mostrar cada registro mientras el backend no lo defina.
+- [x] El panel consulta el endpoint de historial y muestra el estado vacío, el error o la lista de envíos. El formato de cada registro es el record `HistorialItem` del `NotificationController` del backend (ver «Historial tipado» más abajo).
 - [x] La navegación solo muestra el enlace de notificaciones al rol `ADMINISTRADOR`. La ruta también bloquea la vista a visitantes y a otros roles.
 - [x] Se añadió `isReady` al contexto de autenticación para esperar a que Cognito restaure la sesión antes de decidir el acceso al panel.
 - [x] Se agregaron pruebas del servicio para el JWT, roles, envío a todos, error 403 e historial vacío.
+
+## Historial tipado (actualización 2026-11-19)
+
+`getHistorial(token)` devuelve `Promise<HistorialResponse>` (`HistorialItem[]`) en lugar de `unknown[]`. Los campos copian el record del backend:
+
+| Campo | Tipo en TS | Tipo en el backend | Nota |
+|---|---|---|---|
+| `id` | `number` | `Long` | |
+| `titulo` | `string` | `String` | |
+| `cuerpo` | `string` | `String` | |
+| `roles` | `string[] | null` | `List<String>` | Vacío o `null`: se envió a todos los usuarios activos |
+| `enviadoEn` | `string` | `LocalDateTime` | Sin zona horaria, p. ej. `2026-11-13T22:00:00` |
+| `dispositivosEnviados` | `number` | `int` | |
+
+El cliente valida cada registro (`esHistorialItem`) y lanza `ApiError(502)` si la respuesta no cumple el contrato. La página muestra cada envío con título, cuerpo, fecha y hora, destinatarios y dispositivos (`src/utils/notificaciones.ts`), con utilidades de Tailwind. **El backend todavía devuelve siempre `[]`** porque no tiene tabla de historial, así que en uso real se ve «Aún no hay notificaciones en el historial»; la lista se prueba con datos simulados (`tests/notifications.test.ts`, `tests/notifications-page.test.tsx`, `tests/notificaciones-formato.test.ts`).
 
 ## Seguridad y alcance
 

@@ -2,7 +2,7 @@
 
 ## Alcance
 
-La página `/cursos` consume el CRUD existente del backend. En SyncPass, “curso” reutiliza la entidad `Proyecto`; no se crea una entidad nueva ni se modifica el backend.
+La página `/cursos` consume el CRUD existente del backend. En SyncPass, “curso” reutiliza la entidad `Proyecto`; no se crea una entidad nueva. Más tarde el backend sumó el endpoint público `GET /api/cursos/recientes` (lo usa la portada) y la validación de fechas que repite el formulario.
 
 ## Cambios realizados
 
@@ -10,8 +10,8 @@ La página `/cursos` consume el CRUD existente del backend. En SyncPass, “curs
 - [x] Se agregó la ruta `/cursos`. Los usuarios autenticados pueden consultar cursos activos y ver el detalle.
 - [x] Los usuarios `ADMINISTRADOR` pueden crear, editar y desactivar cursos desde el panel.
 - [x] El formulario aplica validaciones y límites de longitud definidos por el backend.
-- [x] Las fechas se muestran como `DD/MM/YYYY` y se editan con controles de fecha.
-- [x] Los estados tienen badges visuales y la desactivación pide confirmación antes de llamar a la API.
+- [x] Las fechas se muestran en español con el mes abreviado (`15 mar 2027`) en la tabla y completo (`15 de marzo de 2027`) en el detalle, y se editan con controles de fecha. La fecha de término debe ser igual o posterior a la de inicio: el calendario no ofrece días anteriores, el formulario muestra el error y no envía, y el backend repite la regla (400).
+- [x] Los estados tienen badges visuales; el detalle y la confirmación de desactivación se muestran en diálogos (`molecules/Dialogo`, `<dialog>` nativo) antes de llamar a la API.
 - [x] Se muestran estados de carga, errores del backend, mensajes de éxito y lista vacía.
 - [x] Se agregaron pruebas de rutas, métodos HTTP, token JWT, payloads, PATCH 204 y error 403.
 
@@ -20,6 +20,7 @@ La página `/cursos` consume el CRUD existente del backend. En SyncPass, “curs
 | Acción | Método y ruta | Permiso |
 |---|---|---|
 | Listar cursos activos | `GET /api/cursos` | Cualquier usuario autenticado |
+| Últimos cursos (portada) | `GET /api/cursos/recientes?limite=3` | Público, sin token |
 | Ver detalle | `GET /api/cursos/{id}` | Cualquier usuario autenticado |
 | Crear | `POST /api/cursos` | `ADMINISTRADOR` |
 | Editar | `PUT /api/cursos/{id}` | `ADMINISTRADOR` |

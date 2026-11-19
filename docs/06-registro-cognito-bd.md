@@ -26,7 +26,7 @@ Estas reglas son obligatorias. Están aquí porque el contexto de este proyecto 
 
 | Pieza | Dónde | Estado al 2026-10-23 |
 |---|---|---|
-| Login | `src/auth/cognito.ts`, `src/auth/AuthContext.tsx` | Funciona. Usa **Amplify v6** (`aws-amplify/auth`) directo contra Cognito con `USER_SRP_AUTH` (la contraseña no viaja en texto plano). El token que se guarda en el contexto es el **ID token**. |
+| Login | `src/auth/cognito.ts`, `src/contexts/AuthContext.tsx` | Funciona. Usa **Amplify v6** (`aws-amplify/auth`) directo contra Cognito con `USER_SRP_AUTH` (la contraseña no viaja en texto plano). El token que se guarda en el contexto es el **ID token**. |
 | Registro | `src/pages/register/Register.tsx` | **No está conectado.** Solo valida en el navegador (hay un `TODO`). También tiene restos de una llamada de prueba a `rickandmortyapi.com` que hay que eliminar. |
 | Cliente HTTP | `src/api/client.ts` | `apiRequest()` con `VITE_API_BASE_URL` y `Authorization: Bearer`. Todavía no se usa para nada real. |
 | Cognito | `Amplify.configure` en `src/auth/cognito.ts` | User Pool en `us-east-1`. El **correo es el nombre de usuario**. El App Client **no tiene secreto** (correcto para una SPA). |
@@ -229,7 +229,7 @@ Sigue el patrón de `MENSAJES_ERROR` en `src/auth/cognito.ts`.
 ## 7. Plan de implementación por fases
 
 ### Fase 0: Descubrimiento (sin escribir código)
-1. Lee `src/auth/cognito.ts`, `src/auth/AuthContext.tsx`, `src/api/client.ts`, `src/pages/register/Register.tsx`, `src/App.tsx`, `package.json` y `scripts/deploy-ec2.ps1`.
+1. Lee `src/auth/cognito.ts`, `src/contexts/AuthContext.tsx`, `src/api/client.ts`, `src/pages/register/Register.tsx`, `src/App.tsx`, `package.json` y `scripts/deploy-ec2.ps1`.
 2. Compara lo que encuentres con la sección 1 y reporta las diferencias.
 3. Haz **todas** las preguntas de la sección 9 y espera las respuestas.
 4. Con las respuestas, resume el diseño final (qué token, dónde vive el backend, qué BD, cómo se asignan los roles, HTTPS sí/no) y pide confirmación.
@@ -270,7 +270,7 @@ CREATE TABLE usuarios (
 
 ### Fase 4: Front
 - `src/auth/cognito.ts`: funciones `registrarCognito`, `confirmarRegistro` y `reenviarCodigo`, con mensajes en español (6.3), siguiendo el estilo existente (`CognitoError`, `mensajeDeError`).
-- `src/auth/AuthContext.tsx`: después de cada inicio de sesión exitoso (y al recuperar una sesión guardada, si se acuerda así), llamar a `POST /api/usuarios/me` con `apiRequest`. Si esa llamada falla, **no** cerrar la sesión de Cognito: mostrar un aviso y reintentar en el próximo inicio de sesión (es idempotente).
+- `src/contexts/AuthContext.tsx`: después de cada inicio de sesión exitoso (y al recuperar una sesión guardada, si se acuerda así), llamar a `POST /api/usuarios/me` con `apiRequest`. Si esa llamada falla, **no** cerrar la sesión de Cognito: mostrar un aviso y reintentar en el próximo inicio de sesión (es idempotente).
 - `src/pages/register/Register.tsx`: reemplazar el `TODO` por `signUp` real, agregar el paso de confirmación de código (con "reenviar código") y eliminar la llamada de prueba a `rickandmortyapi.com`.
 - Login: si Cognito responde `UserNotConfirmedException` o el paso `CONFIRM_SIGN_UP`, llevar al usuario a confirmar su cuenta.
 - Tests en `tests/` siguiendo el estilo de `tests/cognito.test.mjs` para el mapeo de errores.
