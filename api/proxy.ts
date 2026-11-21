@@ -55,7 +55,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     });
     res.send(text);
-  } catch (err) {
+  } catch {
     res.status(502).json({ error: "No se pudo contactar al backend." });
   }
 }

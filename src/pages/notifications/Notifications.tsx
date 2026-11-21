@@ -193,7 +193,7 @@ const Notifications = () => {
           <section className={styles.tarjeta} aria-labelledby="tituloHistorial">
             <h2 id="tituloHistorial">Historial</h2>
             <p className={styles.textoHistorial}>
-              Las notificaciones enviadas aparecerán aquí cuando el backend implemente el historial.
+              Historial de notificaciones enviadas desde el panel. Se actualiza al enviar una nueva.
             </p>
             {errorHistorial ? (
               <p className={styles.error} role="alert">{errorHistorial}</p>

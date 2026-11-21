@@ -30,7 +30,7 @@ export interface HistorialItem {
   dispositivosEnviados: number;
 }
 
-/** Respuesta completa del historial. Hoy el backend devuelve siempre `[]` (sin tabla de historial). */
+/** Respuesta completa del historial. El backend persiste cada envío en `notificacion_historial`. */
 export type HistorialResponse = HistorialItem[];
 
 function esNotificationResponse(value: unknown): value is NotificationResponse {
