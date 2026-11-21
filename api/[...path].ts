@@ -37,7 +37,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method && !["GET", "HEAD"].includes(req.method)) {
     const raw = await readRawBody(req);
     if (raw.length > 0) {
-      init.body = raw;
+      init.body = new Uint8Array(raw);
       if (!headers["content-type"]) {
         headers["content-type"] = "application/json";
       }
